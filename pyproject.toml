@@ -1,0 +1,64 @@
+[build-system]
+requires = [
+         "setuptools>=65",
+         #"setuptools_scm[toml]>=6.2"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vodftools"
+description = "VODF data format tools for validation and documentation"
+readme = "README.md"
+license = {text = "BSD-3-Clause"}
+authors = [
+    {name = "Karl Kosack", email = "karl.kosack@cea.fr"},
+]
+
+requires-python = ">=3.9"
+dependencies = [
+    "numpy",
+    "pydantic",
+    "astropy",
+]
+
+# needed for setuptools_scm, we don't define a static version
+dynamic = ["version"]
+
+[project.urls]
+repository = "https://github.com/vodf/vodftools"
+
+[project.scripts]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+exclude = ["vodftools._dev_version"]
+
+[project.optional-dependencies]
+test = [
+  "pytest",
+  "pytest-cov",
+]
+doc = [
+  "sphinx",
+  "numpydoc",
+  "pydata-sphinx-theme",
+]
+dev = [
+  "setuptools_scm",
+]
+
+# we can use self-references to simplify all
+all = [
+  "vodftools[test,doc,dev]",
+]
+
+#[tool.setuptools_scm]
+#write_to = 'src/template/_version.py'
+
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311']
+
+[tool.isort]
+profile = "black"
+line_length = 88
