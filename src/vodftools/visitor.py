@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-class Visitor:
+class visitor:
     """Simple visitor wrapper for separating data structure from output
     """
     def __init__(self, f):
