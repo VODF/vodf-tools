@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-#
-# TODO: make fits_template methods be outside the class as a visitor pattern
-#
+
+"""
+Elements to build a FITS-compliant schema. This file defines a meta-schema
+for FITS bintables and headers.
+"""
 
 
 from pydantic import BaseModel
-
+from enum import Enum, auto
 
 __all__ = [
     "Header",
