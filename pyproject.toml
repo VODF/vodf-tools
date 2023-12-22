@@ -52,8 +52,8 @@ all = [
   "vodftools[test,doc,dev]",
 ]
 
-#[tool.setuptools_scm]
-write_to = 'src/template/_version.py'
+[tool.setuptools_scm]
+write_to = 'src/vodftools/_version.py'
 
 [tool.black]
 line-length = 88
