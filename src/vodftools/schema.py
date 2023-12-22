@@ -19,38 +19,60 @@ __all__ = [
 ]
 
 
+class ValueType(str, Enum):
+    none = ""
+    float64 = "float64"
+    float32 = "float32"
+    int32 = "int32"
+    int16 = "int16"
+    char = "char"
+
+
 class SchemaElement(BaseModel):
     description: str
     required: bool = True
 
 
 class Header(SchemaElement):
-    """ A metadata key-value pair"""
+    """A metadata key-value pair"""
+
     key: str
-    dtype: str = "E"
+    dtype: ValueType | None = None
+    unit: str = ""
+
 
 class HeaderGroup(SchemaElement):
-    """ Group of metadata keywords, with a common description"""
+    """Group of metadata keywords, with a common description"""
+
     headers: list[Header]
 
+
 class Extension(SchemaElement):
-    """ An HDU in FITS terminology """
+    """An HDU in FITS terminology"""
+
     name: str
     headers: list[Header | HeaderGroup]
 
+
 class Column(SchemaElement):
-    """ Column of a Table"""
+    """Column of a Table"""
+
     name: str
-    dtype: str
+    dtype: ValueType
     ndims: int = 0
     unit: str = ""
     ucd: str = ""
+    format: str = None
     required: bool = False
 
+
 class ColumnGroup(SchemaElement):
-    """ Group of logically-related columns with their description """
+    """Group of logically-related columns with their description"""
+
     columns: list[Column]
 
+
 class Table(Extension):
-    """ A FITS BINTable extension """
+    """A FITS BINTable extension"""
+
     columns: list[Column | ColumnGroup]

@@ -25,10 +25,35 @@ from .schema import (
     HeaderGroup,
     SchemaElement,
     Table,
+    ValueType,
 )
 from .visitor import visitor
 
-__all__ = ["fits_template", 'write_fits_template']
+__all__ = ["fits_template", "write_fits_template"]
+
+
+# From : https://archive.stsci.edu/fits/fits_standard/node68.html#3124
+# | TFORMn value | Description                     | 8-bit Bytes |
+# |--------------+---------------------------------+-------------|
+# | L            | Logical                         |           1 |
+# | X            | Bit                             |           * |
+# | B            | Unsigned byte                   |           1 |
+# | I            | 16-bit integer                  |           2 |
+# | J            | 32-bit integer                  |           4 |
+# | A            | Character                       |           1 |
+# | E            | Single precision floating point |           4 |
+# | D            | Double precision floating point |           8 |
+# | C            | Single precision complex        |           8 |
+# | M            | Double precision complex        |          16 |
+# | P            | Array Descriptor                |             |
+
+TYPE_TO_FITS = {
+    ValueType.float32: "E",
+    ValueType.float64: "D",
+    ValueType.int32: "J",
+    ValueType.int16: "I",
+    ValueType.char: "A",
+}
 
 
 @visitor
@@ -47,6 +72,7 @@ def fits_template(schema: SchemaElement) -> Generator:
         lines of the TPL file
     """
 
+
 def write_fits_template(schema: SchemaElement, output_file: Path) -> None:
     """Write a FITS tpl file for the given SchemaElement
 
@@ -57,13 +83,10 @@ def write_fits_template(schema: SchemaElement, output_file: Path) -> None:
     output_file: str
         Output filename or path
     """
-    with Path(output_file).open(mode='w') as out:
+    with Path(output_file).open(mode="w") as out:
         for line in fits_template(schema):
             out.write(line)
             out.write("\n")
-
-
-
 
 
 #!/usr/bin/env python3
@@ -73,7 +96,7 @@ def _(hdr):
     if hdr.unit:
         extra += f" [{u.Unit(hdr.unit).to_string('fits')}]"
     if hdr.dtype:
-        extra += f" ({hdr.dtype.name})"
+        extra += f" ({TYPE_TO_FITS[hdr.dtype]})"
     if len(hdr.key) <= 8:
         yield f"{hdr.key.upper():8s} =       /{extra} {hdr.description:50s}"
     else:
@@ -112,7 +135,7 @@ def _(hdu):
 @fits_template.generator(Column)
 def _(col):
     yield f"TTYPE# = {col.name} / {col.description:.70s}"
-    yield f"TFORM# = {col.dtype}"
+    yield f"TFORM# = {TYPE_TO_FITS[col.dtype]:5s} / {col.dtype.name}"
     if col.unit:
         yield (
             f"TUNIT# = {u.Unit(col.unit).to_string('fits')} "
@@ -120,6 +143,10 @@ def _(col):
         )
     if col.ucd:
         yield f"TUCD#  = {col.ucd}"
+    if col.ndims:
+        yield f"TDIM#  = {col.ndims}  / {col.ndims}-dimensional array values"
+    if col.format:
+        yield f"TDISP#  = {col.format}  / display format"
     yield ""  # spacer
 
 

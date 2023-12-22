@@ -1,4 +1,4 @@
 #!/usr/bin/env python3
 
 
-__all__ = ['schema']
+__all__ = ["schema"]
