@@ -6,9 +6,9 @@ class Visitor:
         self.f = f
         self.generators = {}
 
-    def generator(self, type1):
+    def generator(self, cls : type):
         def call(fun):
-            self.generators[(type1)] = fun
+            self.generators[cls] = fun
         return call
 
 
