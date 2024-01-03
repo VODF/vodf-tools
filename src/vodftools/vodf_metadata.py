@@ -20,6 +20,6 @@ earth_location_headers = HeaderGroup(
 )
 
 
-event_list = Table(
-    name="EVENTS", description="Event List", headers=[earth_location_headers,]
-)
+# event_list = Table(
+#     name="EVENTS", description="Event List", headers=[earth_location_headers,]
+# )
