@@ -6,8 +6,11 @@ for FITS bintables and headers.
 """
 
 
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 from enum import Enum, auto
+
+from astropy.io.votable.ucd import check_ucd
+from astropy.units import Unit
 
 __all__ = [
     "Header",
@@ -64,6 +67,15 @@ class Column(SchemaElement):
     ucd: str = ""
     format: str = None
     required: bool = False
+
+    @validator("ucd")
+    def is_valid_ucd(cls, val):
+        assert check_ucd(val, check_controlled_vocabulary=True), "Not a valid UCD"
+        return val
+
+    @validator("unit")
+    def is_valid_unit(cls, val):
+        return Unit(val).to_string()
 
 
 class ColumnGroup(SchemaElement):
