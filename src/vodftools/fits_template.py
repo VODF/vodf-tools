@@ -106,9 +106,9 @@ def _(hdr):
 @fits_template.generator(HeaderGroup)
 def _(grp, **kwargs):
     yield ""
-    yield "/ ======================================="
+    yield "/ " + "=" * 78
     yield f"/ {grp.description}"
-    yield "/ ======================================="
+    yield "/ " + "=" * 78
 
     for header in grp.headers:
         yield from fits_template(header)
@@ -116,7 +116,7 @@ def _(grp, **kwargs):
 
 @fits_template.generator(Extension)
 def _(hdu):
-    yield "/ " + "#" * 70
+    yield "/ " + "#" * 78
     yield f"/ HDU: {hdu.name}"
     yield "/ DESCRIPTION: "
     yield from textwrap.wrap(
@@ -125,9 +125,9 @@ def _(hdu):
         subsequent_indent="/    ",
         drop_whitespace=True,
     )
-    yield "/ "+ "#" * 70
+    yield "/ " + "#" * 78
     yield "XTENSION = BINTABLE"
-    yield f"EXTNAME  = {hdu.name} / {hdu.description:.70s}"
+    yield f"EXTNAME  = {hdu.name}"
     for header in hdu.headers:
         yield from fits_template(header)
 
@@ -153,9 +153,14 @@ def _(col):
 @fits_template.generator(ColumnGroup)
 def _(grp, **kwargs):
     yield ""
-    yield "/ ---------------------------------------"
-    yield f"/ {grp.description}"
-    yield "/ ---------------------------------------"
+    yield "/ "+"-" * 60
+    yield from textwrap.wrap(
+        grp.description,
+        initial_indent="/    ",
+        subsequent_indent="/    ",
+        drop_whitespace=True,
+    )
+    yield "/ "+"-" * 60
 
     for column in grp.columns:
         yield from fits_template(column)
@@ -167,8 +172,8 @@ def _(table, **kwargs):
         table
     )  # bit if a hack to call parent
     yield ""
-    yield "/ ======================================="
+    yield "/ " + "=" * 78
     yield "/ Binary Table"
-    yield "/ ======================================="
+    yield "/ " + "=" * 78
     for column in table.columns:
         yield from fits_template(column)
