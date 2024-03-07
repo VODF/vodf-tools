@@ -98,7 +98,7 @@ def _(hdr):
     if hdr.dtype:
         extra += f" ({TYPE_TO_FITS[hdr.dtype]})"
     if len(hdr.key) <= 8:
-        yield f"{hdr.key.upper():8s} =       /{extra} {hdr.description:50s}"
+        yield f"{hdr.key.upper():8s} =                     /{extra} {hdr.description:50s}"
     else:
         yield f"HIERARCH {hdr.key.upper()} = /{extra} {hdr.description:50s}"
 
@@ -106,9 +106,9 @@ def _(hdr):
 @fits_template.generator(HeaderGroup)
 def _(grp, **kwargs):
     yield ""
-    yield "# ======================================="
-    yield f"# {grp.description}"
-    yield "# ======================================="
+    yield "/ ======================================="
+    yield f"/ {grp.description}"
+    yield "/ ======================================="
 
     for header in grp.headers:
         yield from fits_template(header)
@@ -116,16 +116,16 @@ def _(grp, **kwargs):
 
 @fits_template.generator(Extension)
 def _(hdu):
-    yield "#" * 70
-    yield f"# HDU: {hdu.name}"
-    yield "# DESCRIPTION: "
+    yield "/ " + "#" * 70
+    yield f"/ HDU: {hdu.name}"
+    yield "/ DESCRIPTION: "
     yield from textwrap.wrap(
         hdu.description,
-        initial_indent="#    ",
-        subsequent_indent="#    ",
+        initial_indent="/    ",
+        subsequent_indent="/    ",
         drop_whitespace=True,
     )
-    yield "#" * 70
+    yield "/ "+ "#" * 70
     yield "XTENSION = BINTABLE"
     yield f"EXTNAME  = {hdu.name} / {hdu.description:.70s}"
     for header in hdu.headers:
@@ -134,28 +134,28 @@ def _(hdu):
 
 @fits_template.generator(Column)
 def _(col):
-    yield f"TTYPE# = {col.name} / {col.description:.70s}"
-    yield f"TFORM# = {TYPE_TO_FITS[col.dtype]:5s} / {col.dtype.name}"
+    yield f"TTYPE# = {col.name:20s} / {col.description:.70s}"
+    yield f"TFORM# = {TYPE_TO_FITS[col.dtype]:20s} / {col.dtype.name}"
     if col.unit:
         yield (
-            f"TUNIT# = {u.Unit(col.unit).to_string('fits')} "
+            f"TUNIT# = {u.Unit(col.unit).to_string('fits'):20s} "
             f"/ or convertable to '{u.Unit(col.unit).physical_type}'"
         )
     if col.ucd:
-        yield f"TUCD#  = {col.ucd}"
+        yield f"TUCD#  = {col.ucd:20s}"
     if col.ndims:
-        yield f"TDIM#  = {col.ndims}  / {col.ndims}-dimensional array values"
+        yield f"TDIM#  = {col.ndims:20s}  / {col.ndims}-dimensional array values"
     if col.format:
-        yield f"TDISP#  = {col.format}  / display format"
+        yield f"TDISP#  = {col.format:20s}  / display format"
     yield ""  # spacer
 
 
 @fits_template.generator(ColumnGroup)
 def _(grp, **kwargs):
     yield ""
-    yield "# ---------------------------------------"
-    yield f"# {grp.description}"
-    yield "# ---------------------------------------"
+    yield "/ ---------------------------------------"
+    yield f"/ {grp.description}"
+    yield "/ ---------------------------------------"
 
     for column in grp.columns:
         yield from fits_template(column)
@@ -167,8 +167,8 @@ def _(table, **kwargs):
         table
     )  # bit if a hack to call parent
     yield ""
-    yield "# ======================================="
-    yield "# Binary Table"
-    yield "# ======================================="
+    yield "/ ======================================="
+    yield "/ Binary Table"
+    yield "/ ======================================="
     for column in table.columns:
         yield from fits_template(column)
