@@ -93,4 +93,4 @@ class Table(Extension):
 class FITSFile(SchemaElement):
     """A FITS file containing multiple extensions"""
 
-    extensions: list[Extension]
+    extensions: list[Table]

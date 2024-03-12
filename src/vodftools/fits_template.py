@@ -25,7 +25,7 @@ from .schema import (
     HeaderGroup,
     SchemaElement,
     Table,
-    ValueType,
+    DataType,
     FITSFile
 )
 from .visitor import visitor
@@ -49,11 +49,11 @@ __all__ = ["fits_template", "write_fits_template"]
 # | P            | Array Descriptor                |             |
 
 TYPE_TO_FITS = {
-    ValueType.float32: "E",
-    ValueType.float64: "D",
-    ValueType.int32: "J",
-    ValueType.int16: "I",
-    ValueType.char: "A",
+    DataType.float32: "E",
+    DataType.float64: "D",
+    DataType.int32: "J",
+    DataType.int16: "I",
+    DataType.char: "A",
 }
 
 
@@ -182,6 +182,20 @@ def _(table, **kwargs):
 
 @fits_template.generator(FITSFile)
 def _(ffile, **kwargs):
+    yield "/ " + "*" * 78
+    yield "/ FITS FILE: "
+    yield from textwrap.wrap(
+        ffile.description,
+        initial_indent="/    ",
+        subsequent_indent="/    ",
+        drop_whitespace=True,
+    )
+    yield "/    EXTENSIONS SUMMARY:"
+    for ii, extension in enumerate(ffile.extensions):
+        yield f"/      {ii:3d}. {extension.name}"
+    yield "/ " + "*" * 78
+    yield ""
+
     for extension in ffile.extensions:
-        yield from fits_template(Extension)
+        yield from fits_template(extension)
     yield "END"
