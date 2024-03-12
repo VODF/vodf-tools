@@ -92,10 +92,10 @@ def write_fits_template(schema: SchemaElement, output_file: Path) -> None:
 
 #!/usr/bin/env python3
 @fits_template.generator(Header)
-def _(hdr):
+def _(hdr, **kwargs):
     extra = ""
     if hdr.unit:
-        extra += f" [{u.Unit(hdr.unit).to_string('fits')}]"
+        extra += f" [{u.Unit(hdr.unit)}]"
     if hdr.dtype:
         extra += f" ({TYPE_TO_FITS[hdr.dtype]})"
     if len(hdr.key) <= 8:
@@ -112,11 +112,11 @@ def _(grp, **kwargs):
     yield "/ " + "=" * 78
 
     for header in grp.headers:
-        yield from fits_template(header)
+        yield from fits_template(header, **kwargs)
 
 
 @fits_template.generator(Extension)
-def _(hdu):
+def _(hdu, **kwargs):
     yield "/ " + "#" * 78
     yield f"/ HDU: {hdu.name}"
     yield "/ DESCRIPTION: "
@@ -130,16 +130,16 @@ def _(hdu):
     yield "XTENSION = BINTABLE"
     yield f"EXTNAME  = {hdu.name}"
     for header in hdu.headers:
-        yield from fits_template(header)
+        yield from fits_template(header, **kwargs)
 
 
 @fits_template.generator(Column)
-def _(col):
+def _(col, **kwargs):
     yield f"TTYPE# = {col.name:20s} / {col.description:.70s}"
     yield f"TFORM# = {TYPE_TO_FITS[col.dtype]:20s} / {col.dtype.name}"
     if col.unit:
         yield (
-            f"TUNIT# = {u.Unit(col.unit).to_string('fits'):20s} "
+            f"TUNIT# = {u.Unit(col.unit):fits} "
             f"/ or convertable to '{u.Unit(col.unit).physical_type}'"
         )
     if col.ucd:
@@ -164,20 +164,20 @@ def _(grp, **kwargs):
     yield "/ " + "-" * 60
 
     for column in grp.columns:
-        yield from fits_template(column)
+        yield from fits_template(column, **kwargs)
 
 
 @fits_template.generator(Table)
 def _(table, **kwargs):
     yield from fits_template.generators[Extension](
-        table
+        table, **kwargs
     )  # bit if a hack to call parent
     yield ""
     yield "/ " + "=" * 78
     yield "/ Binary Table"
     yield "/ " + "=" * 78
     for column in table.columns:
-        yield from fits_template(column)
+        yield from fits_template(column, **kwargs)
 
 
 @fits_template.generator(FITSFile)
@@ -190,12 +190,13 @@ def _(ffile, **kwargs):
         subsequent_indent="/    ",
         drop_whitespace=True,
     )
-    yield "/    EXTENSIONS SUMMARY:"
+    yield "/ "
+    yield "/ EXTENSIONS SUMMARY:"
     for ii, extension in enumerate(ffile.extensions):
-        yield f"/      {ii:3d}. {extension.name}"
+        yield f"/  {ii:3d}. {extension.name:20s} [{extension.__class__.__name__}]"
     yield "/ " + "*" * 78
     yield ""
 
     for extension in ffile.extensions:
-        yield from fits_template(extension)
+        yield from fits_template(extension, **kwargs)
     yield "END"
