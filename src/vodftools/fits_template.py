@@ -26,6 +26,7 @@ from .schema import (
     SchemaElement,
     Table,
     ValueType,
+    FITSFile
 )
 from .visitor import visitor
 
@@ -153,14 +154,14 @@ def _(col):
 @fits_template.generator(ColumnGroup)
 def _(grp, **kwargs):
     yield ""
-    yield "/ "+"-" * 60
+    yield "/ " + "-" * 60
     yield from textwrap.wrap(
         grp.description,
         initial_indent="/    ",
         subsequent_indent="/    ",
         drop_whitespace=True,
     )
-    yield "/ "+"-" * 60
+    yield "/ " + "-" * 60
 
     for column in grp.columns:
         yield from fits_template(column)
@@ -177,3 +178,10 @@ def _(table, **kwargs):
     yield "/ " + "=" * 78
     for column in table.columns:
         yield from fits_template(column)
+
+
+@fits_template.generator(FITSFile)
+def _(ffile, **kwargs):
+    for extension in ffile.extensions:
+        yield from fits_template(Extension)
+    yield "END"

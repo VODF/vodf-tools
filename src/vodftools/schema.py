@@ -19,10 +19,11 @@ __all__ = [
     "Table",
     "Column",
     "ColumnGroup",
+    "FITSFile",
 ]
 
 
-class ValueType(str, Enum):
+class DataType(str, Enum):
     none = ""
     float64 = "float64"
     float32 = "float32"
@@ -40,7 +41,7 @@ class Header(SchemaElement):
     """A metadata key-value pair"""
 
     key: str
-    dtype: ValueType | None = None
+    dtype: DataType | None = None
     unit: str = ""
 
 
@@ -61,7 +62,7 @@ class Column(SchemaElement):
     """Column of a Table"""
 
     name: str
-    dtype: ValueType
+    dtype: DataType
     ndims: int = 0
     unit: str = ""
     ucd: str = ""
@@ -88,3 +89,8 @@ class Table(Extension):
     """A FITS BINTable extension"""
 
     columns: list[Column | ColumnGroup]
+
+class FITSFile(SchemaElement):
+    """A FITS file containing multiple extensions"""
+
+    extensions: list[Extension]
