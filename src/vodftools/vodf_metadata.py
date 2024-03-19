@@ -3,7 +3,7 @@
 Defines the metadata for VODF files using the metaschemas defined in schema.py
 """
 
-from .schema import HeaderGroup, Header, Table
+from .schema import HeaderGroup, Header, TableExtension
 
 earth_location_headers = HeaderGroup(
     description="Earth Location Information",

@@ -17,10 +17,16 @@ CTAO: DL3
    - ObsTable
  - MONITORING
 
+TODO:
+- Provenance?
+- add UCDs for metadata
 
 Useful links:
 - https://heasarc.gsfc.nasa.gov/docs/fcg/common_dict.html
-- https://fits.gsfc.nasa.gov/standard40/fits_standard40aa-le.pdf
+- FITS standard: https://fits.gsfc.nasa.gov/standard40/fits_standard40aa-le.pdf
+- UCDs: https://ivoa.net/documents/UCD1+/20230125/EN-UCDlist-1.5-20230125.pdf
+
+
 
 """
 
@@ -40,6 +46,7 @@ from vodftools.schema import (
 #### Metadata for DL3 EventList:
 
 creator_headers = HeaderGroup(
+    # TODO: check curator info from IVOA
     description="Creator Information",
     headers=[
         Header(
@@ -48,6 +55,7 @@ creator_headers = HeaderGroup(
         ),
         Header(key="CREATOR", description="Name of software used to create this file"),
         Header(key="DATE", description="Date file was created"),
+        Header(key="DATAID", dtype="uuid", ucd="meta.id", description="unique (UUID) of this"),
         # TODO: contact name, email, software version, format version
     ],
 )
@@ -183,3 +191,41 @@ fixity_headers = HeaderGroup(
     ],
 )
 
+bibliographic_headers = HeaderGroup(
+    description="Bibliographic Information"
+    headers=[
+        Header(
+            key="AUTHOR",
+            description="Contact 'Name <email>' associated with this data product",
+            origin="FITS Standard v4",
+            required=True,
+        ),
+        Header(
+            key="REFERENCE",
+            description="DOI or bibliographic reference of this data product",
+            origin="FITS Standard v4",
+            required=False,
+        ),
+    ]
+
+)
+
+license_headers = HeaderGroup(
+    description="License for this data product",
+    headers=[
+         Header(
+            key="LICENSE",
+            description="License for this data product (e.g. CC BY-NC)",
+            origin="VODF",
+            required=True,
+        ),
+         Header(
+            key="COPYRIGT",
+            description="Copyright owners for this data product",
+            origin="VODF",
+            required=False,
+        ),
+
+
+    ]
+)

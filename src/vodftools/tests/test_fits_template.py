@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from vodftools.fits_template import fits_template, write_fits_template
-from vodftools.schema import Column, ColumnGroup, FITSFile, Header, HeaderGroup, Table
+from vodftools.schema import Column, ColumnGroup, FITSFile, Header, HeaderGroup, TableExtension
 
 
 def test_write_complex_template(tmp_path):
@@ -38,7 +38,7 @@ def test_write_complex_template(tmp_path):
         ],
     )
 
-    t = Table(
+    t = TableExtension(
         name="EVENTS",
         headers=[h, location_headers, cta_headers],
         description=(
