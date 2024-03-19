@@ -8,6 +8,7 @@ for FITS bintables and headers.
 
 from pydantic import BaseModel, validator
 from enum import Enum, auto
+from typing import Optional
 
 from astropy.io.votable.ucd import check_ucd
 from astropy.units import Unit
@@ -24,15 +25,27 @@ __all__ = [
 
 
 class DataType(str, Enum):
-    none = ""
-    float64 = "float64"
-    float32 = "float32"
-    int32 = "int32"
-    int16 = "int16"
-    char = "char"
+    none = ""  # auto()
+    float64 = ("float64",)  # auto()
+    float32 = "float32"  # auto()
+    int32 = "int32"  # auto()
+    int16 = "int16"  # auto()
+    char = "char"  # auto()
+    uint32 = "uint32"  # auto()
+    isotime = "isotime"  # auto()
+
+    @classmethod
+    def to_yaml(cls, representer, node):
+        return representer.represent_scalar("!DataType", str(node.value))
+
+    @classmethod
+    def from_yaml(cls, constructor, node):
+        return cls(node.value)
 
 
 class SchemaElement(BaseModel):
+    """Any element in the FITS schema"""
+
     description: str
     required: bool = True
 
@@ -42,7 +55,10 @@ class Header(SchemaElement):
 
     key: str
     dtype: DataType | None = None
-    unit: str = ""
+    unit: Optional[str] = ""
+    origin: Optional[str] = None  #: who defined this if not VODF
+    value: Optional[str] = None  #: for headers that have to have a fixed value.
+    ivoa_key: Optional[str] = None
 
 
 class HeaderGroup(SchemaElement):
@@ -66,8 +82,7 @@ class Column(SchemaElement):
     ndims: int = 0
     unit: str = ""
     ucd: str = ""
-    format: str = None
-    required: bool = False
+    format: Optional[str] = None
 
     @validator("ucd")
     def is_valid_ucd(cls, val):
@@ -89,6 +104,7 @@ class Table(Extension):
     """A FITS BINTable extension"""
 
     columns: list[Column | ColumnGroup]
+
 
 class FITSFile(SchemaElement):
     """A FITS file containing multiple extensions"""
