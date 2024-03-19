@@ -4,6 +4,10 @@ from vodftools.schema import Column, ColumnGroup, FITSFile, Header, HeaderGroup,
 
 
 def test_write_complex_template(tmp_path):
+    """
+    Generate a FITSFile containing multiple HDUs with different headers,
+    etc, and ensure it can be converted to a fits template.
+    """
     h = Header(key="BOOP", description="Things", dtype="int32", unit="PeV")
 
     location_headers = HeaderGroup(

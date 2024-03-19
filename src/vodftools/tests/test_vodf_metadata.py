@@ -13,7 +13,7 @@ def test_earth_location_to_template():
 
 @pytest.mark.xfail
 def test_earth_location_validate():
-    # some test data to check
+    # some test data to check in astropy.io.FITS data structures
     header = fits.Header(
         [
             fits.Card(keyword="GEOLAT", value=12.6 * u.deg),
