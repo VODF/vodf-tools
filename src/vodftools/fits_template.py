@@ -11,8 +11,10 @@ The results can be printed as follows, assuming schema is an object from schema.
     print("\n".join(fits_template(schema)))
 
 """
+
 import textwrap
 from pathlib import Path
+from itertools import filterfalse
 
 from astropy import units as u
 
@@ -26,7 +28,7 @@ from .schema import (
     SchemaElement,
     Table,
     DataType,
-    FITSFile
+    FITSFile,
 )
 from .visitor import visitor
 
@@ -54,6 +56,7 @@ TYPE_TO_FITS = {
     DataType.int32: "J",
     DataType.int16: "I",
     DataType.char: "A",
+    DataType.isotime: "A",
 }
 
 
@@ -97,11 +100,13 @@ def _(hdr, **kwargs):
     if hdr.unit:
         extra += f" [{u.Unit(hdr.unit)}]"
     if hdr.dtype:
-        extra += f" ({TYPE_TO_FITS[hdr.dtype]})"
+        extra += f" ({hdr.dtype.name})"
+    optional = "(OPTIONAL)" if hdr.required is False else ""
+
     if len(hdr.key) <= 8:
-        yield f"{hdr.key.upper():8s} =                     /{extra} {hdr.description:50s}"
+        yield f"{hdr.key.upper():8s} =                     /{extra} {hdr.description+optional:50s}"
     else:
-        yield f"HIERARCH {hdr.key.upper()} = /{extra} {hdr.description:50s}"
+        yield f"HIERARCH {hdr.key.upper()} = /{extra} {hdr.description+optional:50s}"
 
 
 @fits_template.generator(HeaderGroup)
@@ -127,15 +132,18 @@ def _(hdu, **kwargs):
         drop_whitespace=True,
     )
     yield "/ " + "#" * 78
+
     yield "XTENSION = BINTABLE"
     yield f"EXTNAME  = {hdu.name}"
+
     for header in hdu.headers:
         yield from fits_template(header, **kwargs)
 
 
 @fits_template.generator(Column)
 def _(col, **kwargs):
-    yield f"TTYPE# = {col.name:20s} / {col.description:.70s}"
+    optional = f" (OPTIONAL) " if col.required is False else ""
+    yield f"TTYPE# = {col.name:20s} / {col.description+optional:.70s}"
     yield f"TFORM# = {TYPE_TO_FITS[col.dtype]:20s} / {col.dtype.name}"
     if col.unit:
         yield (
