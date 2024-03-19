@@ -17,17 +17,19 @@ __all__ = [
     "Header",
     "HeaderGroup",
     "Extension",
-    "Table",
+    "TableExtension",
     "Column",
     "ColumnGroup",
     "FITSFile",
 ]
 
 
+
 class DataType(str, Enum):
     none = ""  # auto()
     float64 = ("float64",)  # auto()
     float32 = "float32"  # auto()
+    int64 = "int64"  # auto()
     int32 = "int32"  # auto()
     int16 = "int16"  # auto()
     char = "char"  # auto()
@@ -72,6 +74,7 @@ class Extension(SchemaElement):
 
     name: str
     headers: list[Header | HeaderGroup]
+    version: str
 
 
 class Column(SchemaElement):
@@ -100,7 +103,7 @@ class ColumnGroup(SchemaElement):
     columns: list[Column]
 
 
-class Table(Extension):
+class TableExtension(Extension):
     """A FITS BINTable extension"""
 
     columns: list[Column | ColumnGroup]
@@ -109,4 +112,4 @@ class Table(Extension):
 class FITSFile(SchemaElement):
     """A FITS file containing multiple extensions"""
 
-    extensions: list[Table]
+    extensions: list[TableExtension]

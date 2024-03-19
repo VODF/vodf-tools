@@ -26,7 +26,7 @@ from .schema import (
     Header,
     HeaderGroup,
     SchemaElement,
-    Table,
+    TableExtension,
     DataType,
     FITSFile,
 )
@@ -55,6 +55,7 @@ TYPE_TO_FITS = {
     DataType.float64: "D",
     DataType.int32: "J",
     DataType.int16: "I",
+    DataType.int64: "K",
     DataType.char: "A",
     DataType.isotime: "A",
 }
@@ -135,6 +136,7 @@ def _(hdu, **kwargs):
 
     yield "XTENSION = BINTABLE"
     yield f"EXTNAME  = {hdu.name}"
+    yield f"EXTVER  = {hdu.version}"
 
     for header in hdu.headers:
         yield from fits_template(header, **kwargs)
@@ -175,7 +177,7 @@ def _(grp, **kwargs):
         yield from fits_template(column, **kwargs)
 
 
-@fits_template.generator(Table)
+@fits_template.generator(TableExtension)
 def _(table, **kwargs):
     yield from fits_template.generators[Extension](
         table, **kwargs
