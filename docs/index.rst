@@ -1,5 +1,6 @@
-Welcome to vodf-tools's documentation!
-====================================
+============================
+ vodf-tools's documentation
+============================
 
 **Version**: |version| **Date**: |today|
 
