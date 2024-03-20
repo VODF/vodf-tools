@@ -3,5 +3,7 @@ API Reference
 
 .. currentmodule:: vodftools
 
-.. automodule:: vodftools
-   :members:
+
+.. toctree::
+   schemas
+   fits_templates

@@ -28,6 +28,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
+    "sphinxcontrib.autodoc_pydantic",
     "numpydoc",
 ]
 
@@ -70,3 +71,11 @@ html_theme_options = dict(
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
+
+python_use_unqualified_type_names = True
+add_module_names = False
+
+
+nitpick_ignore = [
+    ("py:class", "pydantic.main.BaseModel"),
+]

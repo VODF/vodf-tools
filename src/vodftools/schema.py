@@ -13,6 +13,7 @@ from astropy.units import Unit
 from pydantic import BaseModel, field_validator
 
 __all__ = [
+    "SchemaElement",
     "Header",
     "HeaderGroup",
     "Extension",
@@ -20,6 +21,7 @@ __all__ = [
     "Column",
     "ColumnGroup",
     "FITSFile",
+    "DataType",
 ]
 
 
@@ -58,7 +60,7 @@ class Header(SchemaElement):
 
     @field_validator("unit")
     @classmethod
-    def _is_valid_unit(cls, val):
+    def is_valid_unit(cls, val):
         """Coerce unit into astropy format."""
         return Unit(val).to_string()
 
@@ -94,14 +96,15 @@ class Column(SchemaElement):
 
     @field_validator("ucd")
     @classmethod
-    def _is_valid_ucd(cls, val):
+    def is_valid_ucd(cls, val):
         """Check if valid IVOA UCD."""
         assert check_ucd(val, check_controlled_vocabulary=True), "Not a valid UCD"
         return val
 
     @field_validator("unit")
     @classmethod
-    def _is_valid_unit(cls, val):
+    def is_valid_unit(cls, val):
+        """Check if valid unit."""
         return Unit(val).to_string()
 
 

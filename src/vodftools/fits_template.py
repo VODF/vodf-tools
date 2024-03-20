@@ -49,7 +49,7 @@ __all__ = ["fits_template", "write_fits_template"]
 # | M            | Double precision complex        |          16 |
 # | P            | Array Descriptor                |             |
 
-TYPE_TO_FITS = {
+_TYPE_TO_FITS = {
     DataType.float32: "E",
     DataType.float64: "D",
     DataType.int32: "J",
@@ -78,7 +78,7 @@ def fits_template(schema: SchemaElement) -> Generator:
 
     Parameters
     ----------
-    schema: SchemaElement
+    schema: vodftools.schema.SchemaElement
         input schema
 
     Returns
@@ -89,7 +89,7 @@ def fits_template(schema: SchemaElement) -> Generator:
 
 
 def write_fits_template(schema: SchemaElement, output_file: Path) -> None:
-    """Write a FITS tpl file for the given SchemaElement.
+    """Write a FITS tpl file for the given ``SchemaElement``.
 
     Parameters
     ----------
@@ -169,7 +169,7 @@ def _(hdu, **kwargs):
 def _(col, **kwargs):
     optional = " (OPTIONAL) " if col.required is False else ""
     yield f"TTYPE# = {col.name:20s} / {col.description+optional:.70s}"
-    yield f"TFORM# = {TYPE_TO_FITS[col.dtype]:20s} / {col.dtype.name}"
+    yield f"TFORM# = {_TYPE_TO_FITS[col.dtype]:20s} / {col.dtype.name}"
     if col.unit:
         yield (
             f"TUNIT# = {u.Unit(col.unit):fits} "
