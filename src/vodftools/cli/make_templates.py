@@ -2,9 +2,9 @@
 
 from argparse import ArgumentParser
 
+from vodftools import __version__
 from vodftools.fits_template import fits_template, write_fits_template
 from vodftools.models.level1 import event_file
-from vodftools import __version__
 
 parser = ArgumentParser("vodf-make-templates", description=__doc__)
 parser.add_argument(
