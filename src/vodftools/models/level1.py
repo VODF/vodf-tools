@@ -25,7 +25,7 @@ Useful links:
 """
 
 
-from inspect import iscode
+from .. import vodf_version_id
 from vodftools.schema import (
     FITSFile,
     Extension,
@@ -43,16 +43,21 @@ from .metadata import (
     time_headers,
     earth_location_headers,
     bibliographic_headers,
+    space_headers,
 )
 
 event_list_hdu = Extension(
-    description="VODF Level 1 Event List",
     name="EVENTS",
+    class_name="OGIP",
+    subclass1="EVENTS",
+    description="VODF Level 1 Event List",
+    datamodel=vodf_version_id(),
     headers=[
         creator_headers,
         bibliographic_headers,
-        observation_headers,
         time_headers,
+        space_headers,
+        observation_headers,
         earth_location_headers,
     ],
 )
@@ -84,7 +89,7 @@ time_interval_columns = ColumnGroup(
 soi_hdu = TableExtension(
     description="Stable Observation Intervals and their connection to IRFs",
     name="SOI",
-    headers=[creator_headers, time_headers, bibliographic_headers],
+    headers=[creator_headers, time_headers,  bibliographic_headers],
     columns=[
         time_interval_columns,
         Column(name="IRF", description="associated IRF", dtype=DataType.char),
