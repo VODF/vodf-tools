@@ -24,7 +24,6 @@ __all__ = [
 ]
 
 
-
 class DataType(str, Enum):
     none = ""  # auto()
     float64 = ("float64",)  # auto()

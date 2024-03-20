@@ -55,7 +55,12 @@ creator_headers = HeaderGroup(
         ),
         Header(key="CREATOR", description="Name of software used to create this file"),
         Header(key="DATE", description="Date file was created"),
-        Header(key="DATAID", dtype="uuid", ucd="meta.id", description="unique (UUID) of this"),
+        Header(
+            key="DATAID",
+            dtype="uuid",
+            ucd="meta.id",
+            description="unique (UUID) of this",
+        ),
         # TODO: contact name, email, software version, format version
     ],
 )
@@ -192,7 +197,7 @@ fixity_headers = HeaderGroup(
 )
 
 bibliographic_headers = HeaderGroup(
-    description="Bibliographic Information"
+    description="Bibliographic Information",
     headers=[
         Header(
             key="AUTHOR",
@@ -206,26 +211,23 @@ bibliographic_headers = HeaderGroup(
             origin="FITS Standard v4",
             required=False,
         ),
-    ]
-
+    ],
 )
 
 license_headers = HeaderGroup(
     description="License for this data product",
     headers=[
-         Header(
+        Header(
             key="LICENSE",
             description="License for this data product (e.g. CC BY-NC)",
             origin="VODF",
             required=True,
         ),
-         Header(
+        Header(
             key="COPYRIGT",
             description="Copyright owners for this data product",
             origin="VODF",
             required=False,
         ),
-
-
-    ]
+    ],
 )

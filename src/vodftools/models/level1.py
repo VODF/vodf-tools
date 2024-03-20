@@ -50,7 +50,7 @@ event_list_hdu = Extension(
     name="EVENTS",
     headers=[
         creator_headers,
-        bibliographic_headers
+        bibliographic_headers,
         observation_headers,
         time_headers,
         earth_location_headers,
@@ -60,7 +60,7 @@ event_list_hdu = Extension(
 
 time_interval_columns = ColumnGroup(
     description="Defines a time interval",
-    headers=[
+    columns=[
         Column(
             name="START",
             dtype=DataType.float32,
