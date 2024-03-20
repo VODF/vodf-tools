@@ -69,10 +69,14 @@ class HeaderGroup(SchemaElement):
 class Extension(SchemaElement):
     """An HDU in FITS terminology"""
 
-    name: str
+    name: str  #: becomes EXTNAME
     headers: list[Header | HeaderGroup]
-    version: int
-
+    version: int = 0 #: used to distinguish between HDUs with same name (EXTVER)
+    datamodel: Optional[str] = "" #: identifier of data model in this HDU (HDUVERS)
+    class_name: Optional[str] = None #: what standard this extension adheres to (HDUCLASS)
+    subclass1: Optional[str] = None #: level-1 hierarchy of this extension, HDUCLAS1
+    subclass2: Optional[str] = None #: level-2 hierarchy of this extension, HDUCLAS2
+    subclass3: Optional[str] = None #: level-3 hierarchy of this extension, HDUCLAS3
 
 class Column(SchemaElement):
     """Column of a Table"""
