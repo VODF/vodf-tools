@@ -36,14 +36,6 @@ class DataType(str, Enum):
     uint32 = "uint32"  # auto()
     isotime = "isotime"  # auto()
 
-    @classmethod
-    def to_yaml(cls, representer, node):
-        return representer.represent_scalar("!DataType", str(node.value))
-
-    @classmethod
-    def from_yaml(cls, constructor, node):
-        return cls(node.value)
-
 
 class SchemaElement(BaseModel):
     """Any element in the FITS schema"""
