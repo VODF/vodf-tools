@@ -61,6 +61,17 @@ TYPE_TO_FITS = {
 }
 
 
+def maybe_long_key_value(key, value):
+    yield "&' \n".join(
+        textwrap.wrap(
+            f"'{value}'",
+            width=79,
+            initial_indent=f"{key} = ",
+            subsequent_indent="CONTINUE '",
+        )
+    )
+
+
 @visitor
 def fits_template(schema: SchemaElement) -> Generator:
     """
@@ -134,9 +145,20 @@ def _(hdu, **kwargs):
     )
     yield "/ " + "#" * 78
 
+    # TODO: add these as Headers in the constructor?
     yield "XTENSION = BINTABLE"
     yield f"EXTNAME  = {hdu.name}"
     yield f"EXTVER  = {hdu.version}"
+    yield from maybe_long_key_value("HDUDOC", hdu.description)
+    yield f"HDUVER = {hdu.datamodel}"
+    if hdu.class_name:
+        yield f"HDUCLASS = {hdu.class_name} / type of HDU"
+    if hdu.subclass1:
+        yield f"HDUCLAS1 = {hdu.subclass1} / subclass level 1"
+    if hdu.subclass2:
+        yield f"HDUCLAS2 = {hdu.subclass2} / subclass level 2"
+    if hdu.subclass3:
+        yield f"HDUCLAS2 = {hdu.subclass3} / subclass level 2"
 
     for header in hdu.headers:
         yield from fits_template(header, **kwargs)
