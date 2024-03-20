@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
-from vodftools.fits_template import fits_template, write_fits_template
-from vodftools.schema import Column, ColumnGroup, DataType, FITSFile, Header, HeaderGroup, TableExtension
+from vodftools.fits_template import write_fits_template
+from vodftools.schema import (
+    Column,
+    ColumnGroup,
+    DataType,
+    FITSFile,
+    Header,
+    HeaderGroup,
+    TableExtension,
+)
 
 
 def test_write_complex_template(tmp_path):

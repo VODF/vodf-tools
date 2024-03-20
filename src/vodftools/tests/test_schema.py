@@ -1,7 +1,7 @@
-from vodftools.schema import Column, ColumnGroup
-from pydantic import ValidationError
-
 import pytest
+from pydantic import ValidationError
+from vodftools.schema import Column, ColumnGroup
+
 
 def test_columns_and_groups():
     c1 = Column(
@@ -20,7 +20,7 @@ def test_columns_and_groups():
         dtype="float64",
     )
 
-    cols = ColumnGroup(columns=[c1,c2], description="A group of columns")
+    cols = ColumnGroup(columns=[c1, c2], description="A group of columns")
 
     assert c1 in cols.columns
 
@@ -33,7 +33,6 @@ def test_columns_and_groups():
             unit="s",
             dtype="float64",
         )
-
 
     # should fail since unit is not valid
     with pytest.raises(ValidationError):

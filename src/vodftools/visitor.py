@@ -2,7 +2,7 @@
 
 
 class visitor:
-    """Simple visitor wrapper for separating data structure from output"""
+    """Simple visitor wrapper for separating data structure from output."""
 
     def __init__(self, f):
         self.f = f

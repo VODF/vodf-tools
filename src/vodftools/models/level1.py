@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # licensed under a 3-clause BSD style license - see LICENSE.rst
 """
-Level 1 Data Model
+Level 1 Data Model.
 ==================
 
 Names: Event Data, Science-Ready Data (TODO: choose good name)
@@ -25,25 +25,22 @@ Useful links:
 """
 
 
-from .. import vodf_version_id
 from vodftools.schema import (
-    FITSFile,
-    Extension,
     Column,
     ColumnGroup,
-    HeaderGroup,
-    Header,
     DataType,
+    FITSFile,
     TableExtension,
 )
 
+from .. import vodf_version_id
 from .metadata import (
-    creator_headers,
-    observation_headers,
-    time_headers,
-    earth_location_headers,
     bibliographic_headers,
+    creator_headers,
+    earth_location_headers,
+    observation_headers,
     space_headers,
+    time_headers,
 )
 
 event_list_hdu = TableExtension(
@@ -60,7 +57,7 @@ event_list_hdu = TableExtension(
         observation_headers,
         earth_location_headers,
     ],
-    columns = []
+    columns=[],
 )
 
 

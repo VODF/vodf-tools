@@ -1,4 +1,4 @@
-"""Defines the methods to generate a FITS Template file from a Schema
+r"""Defines the methods to generate a FITS Template file from a Schema.
 
 This follows the Visitor pattern, where each class is decorated with a function
 @fits_template.generator(CLASS) that tells it how to convert that class into a
@@ -13,22 +13,21 @@ The results can be printed as follows, assuming schema is an object from schema.
 """
 
 import textwrap
+from collections.abc import Generator
 from pathlib import Path
-from itertools import filterfalse
 
 from astropy import units as u
 
-from typing import Generator
 from .schema import (
     Column,
     ColumnGroup,
+    DataType,
     Extension,
+    FITSFile,
     Header,
     HeaderGroup,
     SchemaElement,
     TableExtension,
-    DataType,
-    FITSFile,
 )
 from .visitor import visitor
 
@@ -90,7 +89,7 @@ def fits_template(schema: SchemaElement) -> Generator:
 
 
 def write_fits_template(schema: SchemaElement, output_file: Path) -> None:
-    """Write a FITS tpl file for the given SchemaElement
+    """Write a FITS tpl file for the given SchemaElement.
 
     Parameters
     ----------
@@ -168,7 +167,7 @@ def _(hdu, **kwargs):
 
 @fits_template.generator(Column)
 def _(col, **kwargs):
-    optional = f" (OPTIONAL) " if col.required is False else ""
+    optional = " (OPTIONAL) " if col.required is False else ""
     yield f"TTYPE# = {col.name:20s} / {col.description+optional:.70s}"
     yield f"TFORM# = {TYPE_TO_FITS[col.dtype]:20s} / {col.dtype.name}"
     if col.unit:
@@ -200,6 +199,7 @@ def _(grp, **kwargs):
         yield from fits_template(column, **kwargs)
 
     yield "/ " + "-" * 60
+
 
 @fits_template.generator(TableExtension)
 def _(table, **kwargs):

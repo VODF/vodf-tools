@@ -1,14 +1,10 @@
 #!/usr/bin/env python3
 import astropy.units as u
+import pytest
 from astropy.io import fits
 
-from vodftools.vodf_metadata import earth_location_headers
-from vodftools.fits_template import write_fits_template
 
-import pytest
-
-
-@pytest.mark.xfail
+@pytest.mark.xfail()
 def test_earth_location_validate():
     # some test data to check in astropy.io.FITS data structures
     header = fits.Header(

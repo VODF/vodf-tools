@@ -1,11 +1,8 @@
-"""
-Writes out the VODF model(s) in FITS template (.tpl) format
-"""
+"""Writes out the VODF model(s) in FITS template (.tpl) format."""
 
-from argparse import ArgumentParser, FileType
+from argparse import ArgumentParser
 
-
-from ..fits_template import write_fits_template, fits_template
+from ..fits_template import fits_template, write_fits_template
 from ..models.level1 import event_file
 from ..version import __version__
 

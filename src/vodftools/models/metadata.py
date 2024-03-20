@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # licensed under a 3-clause BSD style license - see LICENSE.rst
 """
-Level 1 Data Model
+Level 1 Data Model.
 ==================
 
 Names: Event Data, Science-Ready Data (TODO: choose good name)
@@ -31,17 +31,11 @@ Useful links:
 """
 
 
-from inspect import iscode
 from vodftools.schema import (
-    FITSFile,
-    Extension,
-    Column,
-    ColumnGroup,
-    HeaderGroup,
-    Header,
     DataType,
+    Header,
+    HeaderGroup,
 )
-
 
 #### Metadata for DL3 EventList:
 
@@ -123,14 +117,13 @@ observation_headers = HeaderGroup(
             description="Stop time of the data in this HDU in the TIMESYS ",
             source="A&A 574, A36 (2015)",
         ),
-
     ],
 )
 
 
 # MJDREFI int MJDREFF double TIMEUNIT string TIMESYS string TIMEREF
 time_headers = HeaderGroup(
-    description= "Temporal coordinate definitions",
+    description="Temporal coordinate definitions",
     headers=[
         Header(
             key="MJDREFI",

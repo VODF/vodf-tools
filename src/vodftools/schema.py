@@ -6,13 +6,11 @@ for FITS bintables and headers.
 """
 
 
-from pydantic import BaseModel, field_validator
-
-from enum import Enum, auto
-from typing import Optional
+from enum import Enum
 
 from astropy.io.votable.ucd import check_ucd
 from astropy.units import Unit
+from pydantic import BaseModel, field_validator
 
 __all__ = [
     "Header",
@@ -34,27 +32,27 @@ class DataType(str, Enum):
     int16 = "int16"  # auto()
     char = "char"  # auto()
     uint32 = "uint32"  # auto()
-    isotime = "isotime" # auto()
+    isotime = "isotime"  # auto()
     uuid = "uuid"
 
 
 class SchemaElement(BaseModel):
-    """Any element in the FITS schema"""
+    """Any element in the FITS schema."""
 
     description: str
     required: bool = True
 
 
 class Header(SchemaElement):
-    """A metadata key-value pair"""
+    """A metadata key-value pair."""
 
     key: str
     dtype: DataType | None = None  #: data type
-    unit: Optional[str] = ""  #: astropy unit string representation
-    origin: Optional[str] = None  #: who defined this keword
-    value: Optional[str] = None  #: for headers that have to have a fixed value.
-    allowed_values:  list[str] = []
-    ivoa_key: Optional[str] = None
+    unit: str | None = ""  #: astropy unit string representation
+    origin: str | None = None  #: who defined this keword
+    value: str | None = None  #: for headers that have to have a fixed value.
+    allowed_values: list[str] = []
+    ivoa_key: str | None = None
 
     @field_validator("unit")
     @classmethod
@@ -63,32 +61,33 @@ class Header(SchemaElement):
 
 
 class HeaderGroup(SchemaElement):
-    """Group of metadata keywords, with a common description"""
+    """Group of metadata keywords, with a common description."""
 
     headers: list[Header]
 
 
 class Extension(SchemaElement):
-    """An HDU in FITS terminology"""
+    """An HDU in FITS terminology."""
 
     name: str  #: becomes EXTNAME
     headers: list[Header | HeaderGroup]
-    version: int = 0 #: used to distinguish between HDUs with same name (EXTVER)
-    datamodel: Optional[str] = "" #: identifier of data model in this HDU (HDUVERS)
-    class_name: Optional[str] = None #: what standard this extension adheres to (HDUCLASS)
-    subclass1: Optional[str] = None #: level-1 hierarchy of this extension, HDUCLAS1
-    subclass2: Optional[str] = None #: level-2 hierarchy of this extension, HDUCLAS2
-    subclass3: Optional[str] = None #: level-3 hierarchy of this extension, HDUCLAS3
+    version: int = 0  #: used to distinguish between HDUs with same name (EXTVER)
+    datamodel: str | None = ""  #: identifier of data model in this HDU (HDUVERS)
+    class_name: str | None = None  #: what standard this extension adheres to (HDUCLASS)
+    subclass1: str | None = None  #: level-1 hierarchy of this extension, HDUCLAS1
+    subclass2: str | None = None  #: level-2 hierarchy of this extension, HDUCLAS2
+    subclass3: str | None = None  #: level-3 hierarchy of this extension, HDUCLAS3
+
 
 class Column(SchemaElement):
-    """Column of a Table"""
+    """Column of a Table."""
 
     name: str
     dtype: DataType
     ndims: int = 0
     unit: str = ""
     ucd: str = ""
-    format: Optional[str] = None
+    format: str | None = None
 
     @field_validator("ucd")
     @classmethod
@@ -103,18 +102,18 @@ class Column(SchemaElement):
 
 
 class ColumnGroup(SchemaElement):
-    """Group of logically-related columns with their description"""
+    """Group of logically-related columns with their description."""
 
     columns: list[Column]
 
 
 class TableExtension(Extension):
-    """A FITS BINTable extension"""
+    """A FITS BINTable extension."""
 
     columns: list[Column | ColumnGroup]
 
 
 class FITSFile(SchemaElement):
-    """A FITS file containing multiple extensions"""
+    """A FITS file containing multiple extensions."""
 
     extensions: list[TableExtension]
