@@ -49,11 +49,15 @@ class Header(SchemaElement):
     """A metadata key-value pair"""
 
     key: str
-    dtype: DataType | None = None
-    unit: Optional[str] = ""
-    origin: Optional[str] = None  #: who defined this if not VODF
+    dtype: DataType | None = None  #: data type
+    unit: Optional[str] = ""  #: astropy unit string representation
+    origin: Optional[str] = None  #: who defined this keword
     value: Optional[str] = None  #: for headers that have to have a fixed value.
     ivoa_key: Optional[str] = None
+
+    @validator("unit")
+    def is_valid_unit(cls, val):
+        return Unit(val).to_string()
 
 
 class HeaderGroup(SchemaElement):
