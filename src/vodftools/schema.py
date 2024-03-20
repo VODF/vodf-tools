@@ -24,6 +24,8 @@ __all__ = [
 
 
 class DataType(str, Enum):
+    """allowed column types."""
+
     none = ""  # auto()
     float64 = ("float64",)  # auto()
     float32 = "float32"  # auto()
@@ -56,7 +58,8 @@ class Header(SchemaElement):
 
     @field_validator("unit")
     @classmethod
-    def is_valid_unit(cls, val):
+    def _is_valid_unit(cls, val):
+        """Coerce unit into astropy format."""
         return Unit(val).to_string()
 
 
@@ -91,13 +94,14 @@ class Column(SchemaElement):
 
     @field_validator("ucd")
     @classmethod
-    def is_valid_ucd(cls, val):
+    def _is_valid_ucd(cls, val):
+        """Check if valid IVOA UCD."""
         assert check_ucd(val, check_controlled_vocabulary=True), "Not a valid UCD"
         return val
 
     @field_validator("unit")
     @classmethod
-    def is_valid_unit(cls, val):
+    def _is_valid_unit(cls, val):
         return Unit(val).to_string()
 
 

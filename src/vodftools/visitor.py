@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
+"""Defines Visitor design pattern."""
 
 
-class visitor:
+class Visitor:
     """Simple visitor wrapper for separating data structure from output."""
 
     def __init__(self, f):
@@ -9,12 +10,15 @@ class visitor:
         self.generators = {}
 
     def generator(self, cls: type):
+        """Define the generator."""
+
         def call(fun):
             self.generators[cls] = fun
 
         return call
 
     def __call__(self, obj):
+        """Visit the thing."""
         try:
             fun = self.generators[type(obj)]
             return fun(obj)

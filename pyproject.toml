@@ -90,6 +90,7 @@ extend-select = [
 ignore = [
     "COM812", # incompatible with ruff format
     "ISC001", # incompatible with ruff format
+    "D205", # docstring first line
 ]
 
 [tool.ruff.lint.pydocstyle]

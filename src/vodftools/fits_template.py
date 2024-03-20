@@ -29,7 +29,7 @@ from .schema import (
     SchemaElement,
     TableExtension,
 )
-from .visitor import visitor
+from .visitor import Visitor
 
 __all__ = ["fits_template", "write_fits_template"]
 
@@ -71,10 +71,10 @@ def maybe_long_key_value(key, value):
     )
 
 
-@visitor
+@Visitor
 def fits_template(schema: SchemaElement) -> Generator:
     """
-    Function to create a generator for a FITS TPL from a given schema object.
+    Create a generator for a FITS TPL from a given schema object.
 
     Parameters
     ----------

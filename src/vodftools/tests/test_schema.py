@@ -26,7 +26,7 @@ def test_columns_and_groups():
 
     # should fail since ucd is not valid
     with pytest.raises(ValidationError):
-        c3 = Column(
+        _ = Column(
             name="time",
             description="gamma ray arrival time",
             ucd="some-invalid-name",
@@ -36,7 +36,7 @@ def test_columns_and_groups():
 
     # should fail since unit is not valid
     with pytest.raises(ValidationError):
-        c3 = Column(
+        _ = Column(
             name="time",
             description="gamma ray arrival time",
             unit="invalid-unit",

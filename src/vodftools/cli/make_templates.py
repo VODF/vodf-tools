@@ -14,6 +14,7 @@ parser.add_argument("--version", action="version", version=__version__)
 
 
 def main():
+    """Generate templates."""
     args = parser.parse_args()
 
     if args.output:
