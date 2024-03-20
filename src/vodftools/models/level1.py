@@ -25,6 +25,7 @@ Useful links:
 """
 
 
+from vodftools import vodf_version_id
 from vodftools.schema import (
     Column,
     ColumnGroup,
@@ -33,7 +34,6 @@ from vodftools.schema import (
     TableExtension,
 )
 
-from .. import vodf_version_id
 from .metadata import (
     bibliographic_headers,
     creator_headers,
