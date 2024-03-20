@@ -52,6 +52,7 @@ class Header(SchemaElement):
     unit: Optional[str] = ""  #: astropy unit string representation
     origin: Optional[str] = None  #: who defined this keword
     value: Optional[str] = None  #: for headers that have to have a fixed value.
+    allowed_values:  list[str] = []
     ivoa_key: Optional[str] = None
 
     @validator("unit")
