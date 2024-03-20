@@ -2,12 +2,13 @@
 
 import pytest
 import os
-from vodftools.models.level1 import event_list_hdu, soi_hdu
+from vodftools.models.level1 import event_list_hdu, soi_hdu, event_file
 from vodftools.fits_template import fits_template, write_fits_template
 
 schemas_to_test = [
-    pytest.param(event_list_hdu, id="eventlist"),
-    pytest.param(soi_hdu, id="soitable"),
+    pytest.param(event_list_hdu, id="event_list"),
+    pytest.param(soi_hdu, id="soi_table"),
+    pytest.param(event_file, id="event_file"),
 ]
 
 

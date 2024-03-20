@@ -46,7 +46,7 @@ from .metadata import (
     space_headers,
 )
 
-event_list_hdu = Extension(
+event_list_hdu = TableExtension(
     name="EVENTS",
     class_name="OGIP",
     subclass1="EVENTS",
@@ -60,6 +60,7 @@ event_list_hdu = Extension(
         observation_headers,
         earth_location_headers,
     ],
+    columns = []
 )
 
 
@@ -89,9 +90,14 @@ time_interval_columns = ColumnGroup(
 soi_hdu = TableExtension(
     description="Stable Observation Intervals and their connection to IRFs",
     name="SOI",
-    headers=[creator_headers, time_headers,  bibliographic_headers],
+    headers=[creator_headers, time_headers, bibliographic_headers],
     columns=[
         time_interval_columns,
         Column(name="IRF", description="associated IRF", dtype=DataType.char),
     ],
+)
+
+
+event_file = FITSFile(
+    description="VODF Level-1 Event Data", extensions=[event_list_hdu, soi_hdu]
 )
