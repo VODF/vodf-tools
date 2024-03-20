@@ -34,7 +34,8 @@ class DataType(str, Enum):
     int16 = "int16"  # auto()
     char = "char"  # auto()
     uint32 = "uint32"  # auto()
-    isotime = "isotime"  # auto()
+    isotime = "isotime" # auto()
+    uuid = "uuid"
 
 
 class SchemaElement(BaseModel):
