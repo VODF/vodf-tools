@@ -25,15 +25,14 @@ Useful links:
 """
 
 
-from vodftools import vodf_version_id
-from vodftools.schema import (
+from .. import vodf_version_id
+from ..schema import (
     Column,
     ColumnGroup,
     DataType,
     FITSFile,
     TableExtension,
 )
-
 from .metadata import (
     bibliographic_headers,
     creator_headers,
