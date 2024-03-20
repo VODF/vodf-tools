@@ -5,5 +5,7 @@ API Reference
 
 
 .. toctree::
+   :maxdepth: 1
+
    schemas
    fits_templates

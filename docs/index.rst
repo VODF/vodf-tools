@@ -10,6 +10,7 @@
 
     installation
     reference
+    vodf-schemas
 
 
 

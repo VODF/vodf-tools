@@ -1,24 +1,30 @@
 #!/usr/bin/env python3
 # licensed under a 3-clause BSD style license - see LICENSE.rst
 """
+===================
 Level 1 Data Model.
-==================
+===================
 
 Names: Event Data, Science-Ready Data (TODO: choose good name)
 CTAO: DL3
 
 
- - EVENT
+- EVENT
+
    - EventList
    - GTI
    - SOI
- - Service:
+
+- Service:
+
    - IRFs linked
    - ObsTable
- - MONITORING
+
+- MONITORING
 
 
 Useful links:
+
 - https://heasarc.gsfc.nasa.gov/docs/fcg/common_dict.html
 - https://fits.gsfc.nasa.gov/standard40/fits_standard40aa-le.pdf
 
@@ -41,6 +47,8 @@ from .metadata import (
     space_headers,
     time_headers,
 )
+
+__all__ = ["event_file"]
 
 event_list_hdu = TableExtension(
     name="EVENTS",

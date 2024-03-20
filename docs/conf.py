@@ -24,12 +24,13 @@ release = version
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    "sphinx.ext.githubpages",
-    "sphinx.ext.intersphinx",
+    "numpydoc",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
+    "sphinx.ext.githubpages",
+    "sphinx.ext.graphviz",
+    "sphinx.ext.intersphinx",
     "sphinxcontrib.autodoc_pydantic",
-    "numpydoc",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -55,8 +56,8 @@ html_theme = "pydata_sphinx_theme"
 html_theme_options = dict(
     navigation_with_keys=False,
     logo=dict(
-        image_light="_static/cta.png",
-        image_dark="_static/cta_dark.png",
+        image_light="_static/vodf-logo.svg",
+        image_dark="_static/vodf-logo.svg",
         alt_text="ctao-logo",
     ),
     # setup for displaying multiple versions, also see setup in .gitlab-ci.yml
@@ -74,6 +75,8 @@ html_static_path = ["_static"]
 
 python_use_unqualified_type_names = True
 add_module_names = False
+autodoc_pydantic_model_erdantic_figure = True
+autodoc_pydantic_model_erdantic_figure_collapsed = False
 
 
 nitpick_ignore = [

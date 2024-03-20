@@ -45,6 +45,7 @@ doc = [
   "numpydoc",
   "pydata-sphinx-theme",
   "autodoc_pydantic",
+  "erdantic",
 ]
 dev = [
   "setuptools_scm",
