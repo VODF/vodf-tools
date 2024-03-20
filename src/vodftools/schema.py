@@ -66,7 +66,7 @@ class Extension(SchemaElement):
 
     name: str
     headers: list[Header | HeaderGroup]
-    version: str
+    version: int
 
 
 class Column(SchemaElement):
