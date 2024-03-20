@@ -195,11 +195,11 @@ def _(grp, **kwargs):
         subsequent_indent="/    ",
         drop_whitespace=True,
     )
-    yield "/ " + "-" * 60
-
+    yield "/   "
     for column in grp.columns:
         yield from fits_template(column, **kwargs)
 
+    yield "/ " + "-" * 60
 
 @fits_template.generator(TableExtension)
 def _(table, **kwargs):
@@ -208,10 +208,11 @@ def _(table, **kwargs):
     )  # bit if a hack to call parent
     yield ""
     yield "/ " + "=" * 78
-    yield "/ Binary Table"
+    yield "/ Table Columns"
     yield "/ " + "=" * 78
     for column in table.columns:
         yield from fits_template(column, **kwargs)
+    yield ""
 
 
 @fits_template.generator(FITSFile)
@@ -226,8 +227,9 @@ def _(ffile, **kwargs):
     )
     yield "/ "
     yield "/ EXTENSIONS SUMMARY:"
+    yield "    ID  NAME               VER TYPE"
     for ii, extension in enumerate(ffile.extensions):
-        yield f"/  {ii:3d}. {extension.name:20s} [{extension.__class__.__name__}]"
+        yield f"/  {ii:3d}. {extension.name:20s} {extension.version:1d} [{extension.__class__.__name__}]"
     yield "/ " + "*" * 78
     yield ""
 

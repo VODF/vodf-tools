@@ -27,7 +27,9 @@ dynamic = ["version"]
 [project.urls]
 repository = "https://github.com/vodf/vodftools"
 
+# Command-line scripts mapping the name of the tool to the import and function >
 [project.scripts]
+vodf-make-templates = "vodftools.cli.make_templates:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
