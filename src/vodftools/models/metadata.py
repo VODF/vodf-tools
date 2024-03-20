@@ -111,16 +111,26 @@ observation_headers = HeaderGroup(
             description="Human readable end of observations (YYYY-MM-DD HH:MM:SS)",
             source="A&A 574, A36 (2015)",
         ),
+        Header(
+            key="TSTART",
+            dtype=DataType.float64,
+            description="Start time of the data in this HDU in the TIMESYS",
+            source="A&A 574, A36 (2015)",
+        ),
+        Header(
+            key="TSTOP",
+            dtype=DataType.float64,
+            description="Stop time of the data in this HDU in the TIMESYS ",
+            source="A&A 574, A36 (2015)",
+        ),
+
     ],
 )
 
 
 # MJDREFI int MJDREFF double TIMEUNIT string TIMESYS string TIMEREF
 time_headers = HeaderGroup(
-    description=(
-        "Definition of the machine-readable time "
-        "system used for event times and related headers"
-    ),
+    description= "Temporal coordinate definitions",
     headers=[
         Header(
             key="MJDREFI",
@@ -146,19 +156,32 @@ time_headers = HeaderGroup(
             value="s",
             source="A&A 574, A36 (2015)",
         ),
+    ],
+)
+
+
+space_headers = HeaderGroup(
+    description="Spatial Coordinate Definitions",
+    headers=[
         Header(
-            key="TSTART",
-            dtype=DataType.float64,
-            description="Start time of the data in this HDU in the time system defined above",
-            source="A&A 574, A36 (2015)",
+            key="EQUINOX",
+            dtype=DataType.float32,
+            unit="yr",
+            value="2000.0",
+            description="Celestial equinox used for positions",
+            source="OGIP  HFWG r3",
         ),
         Header(
-            key="TSTOP",
-            dtype=DataType.float64,
-            description="Stop time of the data in this HDU in the time system defined above",
-            source="A&A 574, A36 (2015)",
+            key="RADECSYS",
+            description="Stellar reference frame used for positions.",
+            allowed_values=["ICRS", "FK5"],
+            source="OGIP HFWG r3",
         ),
     ],
+    # EQUINOX type: float
+    #
+    # RADECSYS type: string
+    #
 )
 
 # acquisition_headers :  sb_id, ...
