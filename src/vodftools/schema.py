@@ -6,7 +6,8 @@ for FITS bintables and headers.
 """
 
 
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, field_validator
+
 from enum import Enum, auto
 from typing import Optional
 
@@ -55,7 +56,8 @@ class Header(SchemaElement):
     allowed_values:  list[str] = []
     ivoa_key: Optional[str] = None
 
-    @validator("unit")
+    @field_validator("unit")
+    @classmethod
     def is_valid_unit(cls, val):
         return Unit(val).to_string()
 
@@ -88,12 +90,14 @@ class Column(SchemaElement):
     ucd: str = ""
     format: Optional[str] = None
 
-    @validator("ucd")
+    @field_validator("ucd")
+    @classmethod
     def is_valid_ucd(cls, val):
         assert check_ucd(val, check_controlled_vocabulary=True), "Not a valid UCD"
         return val
 
-    @validator("unit")
+    @field_validator("unit")
+    @classmethod
     def is_valid_unit(cls, val):
         return Unit(val).to_string()
 
