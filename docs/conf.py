@@ -60,7 +60,7 @@ html_theme_options = dict(
     ),
     # setup for displaying multiple versions, also see setup in .gitlab-ci.yml
     switcher=dict(
-        json_url="http://cta-computing.gitlab-pages.cta-observatory.org/documentation/python-project-template/versions.json",  # noqa: E501
+        json_url="http://xxx/versions.json",  # noqa: E501
         version_match="latest" if ".dev" in version else f"v{version}",
     ),
     navbar_start=["navbar-logo", "version-switcher"],
