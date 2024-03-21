@@ -67,6 +67,7 @@ html_theme_options = dict(
         version_match="latest" if ".dev" in version else f"v{version}",
     ),
     navbar_start=["navbar-logo", "version-switcher"],
+    announcement="<p>This is an unreleased version, informaton may not be correct</p>",
 )
 
 # Add any paths that contain custom static files (such as style sheets) here,
