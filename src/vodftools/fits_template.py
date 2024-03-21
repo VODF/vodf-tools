@@ -227,11 +227,13 @@ def _(ffile, **kwargs):
     )
     yield "/* "
     yield "/* EXTENSIONS SUMMARY:"
-    yield "/*  IDX  NAME               CLASS               VER TYPE"
+    yield "/*  IDX  NAME               VER CLASS                TYPE"
+    yield "/*  ---  ------------------ --- -------------------- ----------------"
     for ii, extension in enumerate(ffile.extensions):
         yield (
-            f"/*  {ii:3d}. {extension.name:18s} {'.'.join(extension.class_info()):20s}"
-            f"{extension.version:1d} [{extension.__class__.__name__}]"
+            f"/*  {ii:3d}. {extension.name:18s} {extension.version:3d} "
+            f"{'.'.join(extension.class_info()):20s}"
+            f" [{extension.__class__.__name__}]"
         )
     yield "/*" + "*" * 78
     yield ""
