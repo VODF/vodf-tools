@@ -13,6 +13,9 @@
 #   - data quality
 #   - pointing
 
+# Note: GADF Extension info:
+#   https://gamma-astro-data-formats.readthedocs.io/en/v0.3/general/hduclass.html
+
 
 from .. import vodf_version_id
 from ..schema import (
@@ -31,7 +34,7 @@ from .metadata import (
     time_headers,
 )
 
-__all__ = ["event_file"]
+__all__ = ["event_file", "irf_file"]
 
 event_list_hdu = TableExtension(
     name="EVENTS",
@@ -87,4 +90,22 @@ soi_hdu = TableExtension(
 
 event_file = FITSFile(
     description="VODF Level-1 Event Data", extensions=[event_list_hdu, soi_hdu]
+)
+
+
+eff_area_2d_hdu = TableExtension(
+    description="Effective Area Response",
+    name="EFFECTIVE AREA",
+    version=1,
+    class_name="VODF",
+    subclass1="EFF_AREA",
+    subclass2="SPATIAL_NONE",
+    subclass3="AEFF_2D",
+    headers=[creator_headers, bibliographic_headers],
+    columns=[],
+)
+
+irf_file = FITSFile(
+    description="VODF Level-1 Instrumental Response Functions",
+    extensions=[eff_area_2d_hdu],
 )
