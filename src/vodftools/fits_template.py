@@ -117,7 +117,7 @@ def _(hdr, **kwargs):
     maybe_value = hdr.value if hdr.value else ""
 
     if len(hdr.key) <= 8:
-        yield f"{hdr.key.upper():8s} = {maybe_value:20}      /{extra} {hdr.description+optional:50s}"
+        yield f"{hdr.key.upper():8s} = {maybe_value:8} /{extra} {hdr.description+optional:50s}"
     else:
         yield f"HIERARCH {hdr.key.upper()} = /{extra} {hdr.description+optional:50s}"
 
