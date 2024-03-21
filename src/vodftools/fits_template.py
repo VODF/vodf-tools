@@ -159,7 +159,9 @@ def _(hdu, **kwargs):
     if hdu.subclass2:
         yield f"HDUCLAS2 = {hdu.subclass2} / subclass level 2"
     if hdu.subclass3:
-        yield f"HDUCLAS2 = {hdu.subclass3} / subclass level 2"
+        yield f"HDUCLAS3 = {hdu.subclass3} / subclass level 3"
+    if hdu.subclass3:
+        yield f"HDUCLAS4 = {hdu.subclass4} / subclass level 4"
 
     for header in hdu.headers:
         yield from fits_template(header, **kwargs)

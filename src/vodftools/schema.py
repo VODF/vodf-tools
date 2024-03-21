@@ -82,6 +82,7 @@ class Extension(SchemaElement):
     subclass1: str | None = None  #: level-1 hierarchy of this extension, HDUCLAS1
     subclass2: str | None = None  #: level-2 hierarchy of this extension, HDUCLAS2
     subclass3: str | None = None  #: level-3 hierarchy of this extension, HDUCLAS3
+    subclass4: str | None = None  #: level-4 hierarchy of this extension, HDUCLAS4
 
     def class_info(self) -> list[str]:
         """Return the class info as an array."""
@@ -90,7 +91,16 @@ class Extension(SchemaElement):
         else:
             return [
                 self.class_name,
-            ] + [x for x in [self.subclass1, self.subclass2, self.subclass3] if x]
+            ] + [
+                x
+                for x in [
+                    self.subclass1,
+                    self.subclass2,
+                    self.subclass3,
+                    self.subclass4,
+                ]
+                if x
+            ]
 
 
 class Column(SchemaElement):
