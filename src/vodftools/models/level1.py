@@ -1,34 +1,17 @@
 #!/usr/bin/env python3
 # licensed under a 3-clause BSD style license - see LICENSE.rst
-"""
-===================
-Level 1 Data Model.
-===================
+"""Level 1 Data Model."""
 
-Names: Event Data, Science-Ready Data (TODO: choose good name)
-CTAO: DL3
-
-
-- EVENT
-
-   - EventList
-   - GTI
-   - SOI
-
-- Service:
-
-   - IRFs linked
-   - ObsTable
-
-- MONITORING
-
-
-Useful links:
-
-- https://heasarc.gsfc.nasa.gov/docs/fcg/common_dict.html
-- https://fits.gsfc.nasa.gov/standard40/fits_standard40aa-le.pdf
-
-"""
+# - EVENT
+#   - event-list table
+#   - GTI table
+#   - SOI table
+# - SERVICE:
+#   - IRFs
+#   - ObsTable
+# - MONITORING (time-series)
+#   - data quality
+#   - pointing
 
 
 from .. import vodf_version_id
