@@ -217,20 +217,23 @@ def _(table, **kwargs):
 
 @fits_template.generator(FITSFile)
 def _(ffile, **kwargs):
-    yield "/ " + "*" * 78
-    yield "/ FITS FILE: "
+    yield "/*" + "*" * 78
+    yield "/* FITS FILE: "
     yield from textwrap.wrap(
         ffile.description,
-        initial_indent="/    ",
-        subsequent_indent="/    ",
+        initial_indent="/*    ",
+        subsequent_indent="/*    ",
         drop_whitespace=True,
     )
-    yield "/ "
-    yield "/ EXTENSIONS SUMMARY:"
-    yield "    ID  NAME               VER TYPE"
+    yield "/* "
+    yield "/* EXTENSIONS SUMMARY:"
+    yield "/*  IDX  NAME               CLASS               VER TYPE"
     for ii, extension in enumerate(ffile.extensions):
-        yield f"/  {ii:3d}. {extension.name:20s} {extension.version:1d} [{extension.__class__.__name__}]"
-    yield "/ " + "*" * 78
+        yield (
+            f"/*  {ii:3d}. {extension.name:18s} {'.'.join(extension.class_info()):20s}"
+            f"{extension.version:1d} [{extension.__class__.__name__}]"
+        )
+    yield "/*" + "*" * 78
     yield ""
 
     for extension in ffile.extensions:
