@@ -222,7 +222,7 @@ bibliographic_headers = HeaderGroup(
             required=True,
         ),
         Header(
-            key="REFERENCE",
+            key="REFERENC",
             description="DOI or bibliographic reference of this data product",
             origin="FITS Standard v4",
             required=False,
