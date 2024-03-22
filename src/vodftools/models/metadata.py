@@ -181,13 +181,16 @@ space_headers = HeaderGroup(
 
 
 earth_location_headers = HeaderGroup(
-    description="Earth Location Information of the Observatory",
+    description=(
+        "Earth Location of the Observatory, "
+        "needed to transform between horizonal and celestial coordinate frames"
+    ),
     headers=[
-        Header(key="GEOLON", description="Earth Longitude", unit="deg"),
-        Header(key="GEOLAT", description="Earth Latitude", unit="deg"),
+        Header(key="GEOLON", description="Longitude of observatory", unit="deg"),
+        Header(key="GEOLAT", description="Latitude of observatory", unit="deg"),
         Header(
             key="ALTITUDE",
-            description="Altitude above sea level",
+            description="Altitude (above sea level) observatory",
             unit="m",
         ),
     ],
