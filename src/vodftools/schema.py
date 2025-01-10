@@ -6,7 +6,7 @@ for FITS bintables and headers.
 """
 
 
-from enum import Enum
+from enum import StrEnum, auto
 
 from astropy.io.votable.ucd import check_ucd
 from astropy.units import Unit
@@ -25,19 +25,19 @@ __all__ = [
 ]
 
 
-class DataType(str, Enum):
+class DataType(StrEnum):
     """allowed column types."""
 
-    none = ""  # auto()
-    float64 = ("float64",)  # auto()
-    float32 = "float32"  # auto()
-    int64 = "int64"  # auto()
-    int32 = "int32"  # auto()
-    int16 = "int16"  # auto()
-    char = "char"  # auto()
-    uint32 = "uint32"  # auto()
-    isotime = "isotime"  # auto()
-    uuid = "uuid"
+    none = auto()
+    float64 = auto()
+    float32 = auto()
+    int64 = auto()
+    int32 = auto()
+    int16 = auto()
+    char = auto()
+    uint32 = auto()
+    isotime = auto()
+    uuid = auto()
 
 
 class SchemaElement(BaseModel):
