@@ -50,7 +50,7 @@ class SchemaElement(BaseModel):
 class Header(SchemaElement):
     """A metadata key-value pair."""
 
-    key: str
+    fits_key: str
     dtype: DataType | None = None  #: data type
     unit: str | None = ""  #: astropy unit string representation
     origin: str | None = None  #: who defined this keword

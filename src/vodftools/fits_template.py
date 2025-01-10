@@ -106,7 +106,7 @@ def write_fits_template(schema: SchemaElement, output_file: Path) -> None:
 
 #!/usr/bin/env python3
 @fits_template.generator(Header)
-def _(hdr, **kwargs):
+def _(hdr: Header, **kwargs):
     extra = ""
     if hdr.unit:
         extra += f" [{u.Unit(hdr.unit)}]"
@@ -116,10 +116,10 @@ def _(hdr, **kwargs):
 
     maybe_value = hdr.value if hdr.value else ""
 
-    if len(hdr.key) <= 8:
-        yield f"{hdr.key.upper():8s} = {maybe_value:8} /{extra} {hdr.description+optional:50s}"
+    if len(hdr.fits_key) <= 8:
+        yield f"{hdr.fits_key.upper():8s} = {maybe_value:8} /{extra} {hdr.description+optional:50s}"
     else:
-        yield f"HIERARCH {hdr.key.upper()} = /{extra} {hdr.description+optional:50s}"
+        yield f"HIERARCH {hdr.fits_key.upper()} = /{extra} {hdr.description+optional:50s}"
 
 
 @fits_template.generator(HeaderGroup)

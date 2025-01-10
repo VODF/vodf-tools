@@ -16,19 +16,27 @@ def test_write_complex_template(tmp_path):
     Generate a FITSFile containing multiple HDUs with different headers,
     etc, and ensure it can be converted to a fits template.
     """
-    h = Header(key="BOOP", description="Things", dtype=DataType.float32, unit="PeV")
+    h = Header(
+        fits_key="BOOP", description="Things", dtype=DataType.float32, unit="PeV"
+    )
 
     location_headers = HeaderGroup(
         description="Earth Location Information",
         headers=[
             Header(
-                key="GEOLON", description="Earth Longitude", unit="deg", required=False
+                fits_key="GEOLON",
+                description="Earth Longitude",
+                unit="deg",
+                required=False,
             ),
             Header(
-                key="GEOLAT", description="Earth Latitude", unit="deg", required=False
+                fits_key="GEOLAT",
+                description="Earth Latitude",
+                unit="deg",
+                required=False,
             ),
             Header(
-                key="ALTITUDE",
+                fits_key="ALTITUDE",
                 description="Altitude above sea level",
                 unit="m",
                 required=False,
@@ -40,7 +48,7 @@ def test_write_complex_template(tmp_path):
         description="CTA specific Information",
         headers=[
             Header(
-                key="CTA INSTRUMENT NAME",
+                fits_key="CTA INSTRUMENT NAME",
                 description="Name of subarray or element of CTAO",
             )
         ],
