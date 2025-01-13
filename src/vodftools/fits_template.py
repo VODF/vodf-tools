@@ -205,9 +205,6 @@ def _(grp, **kwargs):
 
 @fits_template.generator(TableExtension)
 def _(table, **kwargs):
-    yield from fits_template.generators[Extension](
-        table, **kwargs
-    )  # bit if a hack to call parent
     yield ""
     yield "/ " + "=" * 78
     yield "/ Table Columns"
