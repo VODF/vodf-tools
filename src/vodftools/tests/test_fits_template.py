@@ -17,25 +17,33 @@ def test_write_complex_template(tmp_path):
     etc, and ensure it can be converted to a fits template.
     """
     h = Header(
-        fits_key="BOOP", description="Things", dtype=DataType.float32, unit="PeV"
+        name="test",
+        fits_key="BOOP",
+        description="Things",
+        dtype=DataType.float32,
+        unit="PeV",
     )
 
     location_headers = HeaderGroup(
+        name="Location",
         description="Earth Location Information",
         headers=[
             Header(
+                name="geo_lon",
                 fits_key="GEOLON",
                 description="Earth Longitude",
                 unit="deg",
                 required=False,
             ),
             Header(
+                name="geo_lat",
                 fits_key="GEOLAT",
                 description="Earth Latitude",
                 unit="deg",
                 required=False,
             ),
             Header(
+                name="alt",
                 fits_key="ALTITUDE",
                 description="Altitude above sea level",
                 unit="m",
@@ -45,9 +53,11 @@ def test_write_complex_template(tmp_path):
     )
 
     cta_headers = HeaderGroup(
+        name="CTAReference",
         description="CTA specific Information",
         headers=[
             Header(
+                name="instrument_name",
                 fits_key="CTA INSTRUMENT NAME",
                 description="Name of subarray or element of CTAO",
             )
@@ -82,6 +92,7 @@ def test_write_complex_template(tmp_path):
                 ucd="phys.energy",
             ),
             ColumnGroup(
+                name="fov_cols",
                 description="Columns Related to the FOV",
                 columns=[
                     Column(
@@ -101,5 +112,5 @@ def test_write_complex_template(tmp_path):
         ],
     )
 
-    f = FITSFile(extensions=[t, t, t], description="A Nice FITS file")
+    f = FITSFile(name="test_file", extensions=[t, t, t], description="A Nice FITS file")
     write_fits_template(f, tmp_path / "test.tpl")

@@ -55,6 +55,7 @@ event_list_hdu = TableExtension(
 
 
 time_interval_columns = ColumnGroup(
+    name="time_interval_columns",
     description="Defines a time interval",
     columns=[
         Column(
@@ -89,7 +90,9 @@ soi_hdu = TableExtension(
 
 
 event_file = FITSFile(
-    description="VODF Level-1 Event Data", extensions=[event_list_hdu, soi_hdu]
+    name="event_file",
+    description="VODF Level-1 Event Data",
+    extensions=[event_list_hdu, soi_hdu],
 )
 
 
@@ -145,6 +148,7 @@ eff_area_2d_hdu = TableExtension(
 )
 
 irf_file = FITSFile(
+    name="irf_file",
     description="VODF Level-1 Instrumental Response Functions",
     extensions=[eff_area_2d_hdu],
 )

@@ -41,17 +41,22 @@ creator_headers = HeaderGroup(
     description="Creator Information",
     headers=[
         Header(
+            name="organization",
             fits_key="ORIGIN",
             description="Organization or institution responsible for this file (e.g. CTAO)",
             origin=Origin.fits,
         ),
         Header(
+            name="software",
             fits_key="CREATOR",
             description="Name of software used to create this file",
             origin=Origin.heasarc,
         ),
-        Header(fits_key="DATE", description="Date file was created"),
         Header(
+            name="creation_date", fits_key="DATE", description="Date file was created"
+        ),
+        Header(
+            name="data_product_id",
             fits_key="DATAID",
             dtype="uuid",
             ucd="meta.id",
@@ -66,12 +71,14 @@ instrument_headers = HeaderGroup(
     description="Instrument Information",
     headers=[
         Header(
+            name="facility_name",
             fits_key="TELESCOP",
             description="The name of the facility used for the observation",
             origin=Origin.fits_v4,
             ivoa_key="facility_name",
         ),
         Header(
+            name="instrument_name",
             fits_key="INSTRUME",
             description="The name of the instrument used for the observation",
             origin=Origin.fits_v4,
@@ -86,40 +93,46 @@ observation_headers = HeaderGroup(
     # obs_id, object
     headers=[
         Header(
+            name="obs_id",
             fits_key="OBS_ID",
             description="Observation identifier",
             source="NASA Extended Keywords",
             ivoa_key="obs_id",
         ),
         Header(
+            name="proposal_id",
             fits_key="PROP_ID",
             description="Proposal identifier",
             source="VODF",
             required=False,
         ),
         Header(
+            name="start_date",
             fits_key="DATE-BEG",
             dtype=DataType.isotime,
             description="Human readable start of observation (YYYY-MM-DD HH:MM:SS)",
-            source="A&A 574, A36 (2015)",
+            source=Origin.fits_timerep,
         ),
         Header(
+            name="end_date",
             fits_key="DATE-END",
             dtype=DataType.isotime,
             description="Human readable end of observations (YYYY-MM-DD HH:MM:SS)",
-            source="A&A 574, A36 (2015)",
+            source=Origin.fits_timerep,
         ),
         Header(
+            name="start_time",
             fits_key="TSTART",
             dtype=DataType.float64,
             description="Start time of the data in this HDU in the TIMESYS",
-            source="A&A 574, A36 (2015)",
+            source=Origin.fits_timerep,
         ),
         Header(
+            name="end_time",
             fits_key="TSTOP",
             dtype=DataType.float64,
             description="Stop time of the data in this HDU in the TIMESYS ",
-            source="A&A 574, A36 (2015)",
+            source=Origin.fits_timerep,
         ),
     ],
 )
@@ -131,28 +144,32 @@ time_headers = HeaderGroup(
     description="Temporal coordinate definitions",
     headers=[
         Header(
+            name="reference_time_integer",
             fits_key="MJDREFI",
             description="integer part of reference time",
             dtype=DataType.int32,
-            source="A&A 574, A36 (2015)",
+            source=Origin.fits_timerep,
         ),
         Header(  # TODO: do we need this? or just use MJDREF?
+            name="reference_time_fraction",
             fits_key="MJDREFF",
             description="fractional part of reference time",
             dtype=DataType.float64,
-            source="A&A 574, A36 (2015)",
+            source=Origin.fits_timerep,
         ),
         Header(
+            name="time_system",
             fits_key="TIMESYS",
             description="Time System",
             dtype=DataType.int32,
-            source="A&A 574, A36 (2015)",
+            source=Origin.fits_timerep,
         ),
         Header(
+            name="time_unit",
             fits_key="TIMEUNIT",
             description="unit used to define times",
             value="s",
-            source="A&A 574, A36 (2015)",
+            source=Origin.fits_timerep,
         ),
     ],
 )
@@ -163,6 +180,7 @@ space_headers = HeaderGroup(
     description="Spatial Coordinate Definitions",
     headers=[
         Header(
+            name="equinox",
             fits_key="EQUINOX",
             dtype=DataType.float32,
             unit="yr",
@@ -171,6 +189,7 @@ space_headers = HeaderGroup(
             source="OGIP  HFWG r3",
         ),
         Header(
+            name="reference_frame",
             fits_key="RADECSYS",
             description="Stellar reference frame used for positions.",
             allowed_values=["ICRS", "FK5"],
@@ -187,14 +206,26 @@ space_headers = HeaderGroup(
 
 
 earth_location_headers = HeaderGroup(
+    name="EarthLocation",
     description=(
         "Earth Location of the Observatory, "
         "needed to transform between horizonal and celestial coordinate frames"
     ),
     headers=[
-        Header(fits_key="GEOLON", description="Longitude of observatory", unit="deg"),
-        Header(fits_key="GEOLAT", description="Latitude of observatory", unit="deg"),
         Header(
+            name="observatory_longitude",
+            fits_key="GEOLON",
+            description="Longitude of observatory",
+            unit="deg",
+        ),
+        Header(
+            name="observatory_latitude",
+            fits_key="GEOLAT",
+            description="Latitude of observatory",
+            unit="deg",
+        ),
+        Header(
+            name="observtory_altitude",
             fits_key="ALTITUDE",
             description="Altitude (above sea level) observatory",
             unit="m",
@@ -203,9 +234,11 @@ earth_location_headers = HeaderGroup(
 )
 
 fixity_headers = HeaderGroup(
+    name="Fixity",
     description="Fixity headers to ensure data integrity",
     headers=[
         Header(
+            name="data_checksum",
             fits_key="DATASUM",
             dtype=DataType.uint32,
             description="checksum of the data in the HDU",
@@ -213,6 +246,7 @@ fixity_headers = HeaderGroup(
             required=False,
         ),
         Header(
+            name="hdu_checksum",
             fits_key="CHECKSUM",
             dtype=DataType.uint32,
             description="checksum of the entire HDU",
@@ -222,15 +256,18 @@ fixity_headers = HeaderGroup(
 )
 
 bibliographic_headers = HeaderGroup(
+    name="BibliographyContext",
     description="Bibliographic Information",
     headers=[
         Header(
+            name="author",
             fits_key="AUTHOR",
             description="Contact 'Name <email>' associated with this data product",
             origin=Origin.fits_v4,
             required=True,
         ),
         Header(
+            name="reference_doi",
             fits_key="REFERENC",
             description="DOI or bibliographic reference of this data product",
             origin=Origin.fits_v4,
@@ -240,15 +277,18 @@ bibliographic_headers = HeaderGroup(
 )
 
 license_headers = HeaderGroup(
+    name="LicenseContext",
     description="License for this data product",
     headers=[
         Header(
+            name="license_type",
             fits_key="LICENSE",
             description="License for this data product (e.g. CC BY-NC)",
             origin=Origin.vodf,
             required=True,
         ),
         Header(
+            name="copyright",
             fits_key="COPYRIGT",
             description="Copyright owners for this data product",
             origin=Origin.vodf,

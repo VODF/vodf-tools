@@ -20,7 +20,7 @@ def test_columns_and_groups():
         dtype="float64",
     )
 
-    cols = ColumnGroup(columns=[c1, c2], description="A group of columns")
+    cols = ColumnGroup(name="group", columns=[c1, c2], description="A group of columns")
 
     assert c1 in cols.columns
 

@@ -49,12 +49,13 @@ class Origin(StrEnum):
     heasarc = "HEASARC"
     ogip = "OGIP"
     vodf = "VODF"
+    fits_timerep = "Representations of time coordinates in FITS, A&A 574, A36 (2015)"
 
 
 class SchemaElement(BaseModel):
     """Any element in the FITS schema."""
 
-    name: str | None = None
+    name: str
     description: str
     required: bool = True
 
