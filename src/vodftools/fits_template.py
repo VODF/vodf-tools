@@ -174,15 +174,15 @@ def _(col, **kwargs):
     yield f"TFORM# = {_TYPE_TO_FITS[col.dtype]:20s} / {col.dtype.name}"
     if col.unit:
         yield (
-            f"TUNIT# = {u.Unit(col.unit):fits} "
-            f"/ or convertable to '{u.Unit(col.unit).physical_type}'"
+            f"TUNIT# = {u.Unit(col.unit).to_string('fits'):20s}"
+            f" / or convertable to '{u.Unit(col.unit).physical_type}'"
         )
     if col.ucd:
         yield f"TUCD#  = {col.ucd:20s}"
     if col.ndims:
-        yield f"TDIM#  = {col.ndims:20s}  / {col.ndims}-dimensional array values"
+        yield f"TDIM#  = {col.ndims:<20d} / value is a {col.ndims}-dimensional array"
     if col.format:
-        yield f"TDISP#  = {col.format:20s}  / display format"
+        yield f"TDISP#  = {col.format:20s} / display format"
     yield ""  # spacer
 
 
