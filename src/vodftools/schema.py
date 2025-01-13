@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 """
-Elements to build a FITS-compliant schema. This file defines a meta-schema
-for FITS bintables and headers.
+Elements to build a FITS-compliant schema.
+
+This file defines a meta-schema for FITS bintables and headers.
 """
 
 
@@ -40,6 +41,16 @@ class DataType(StrEnum):
     uuid = auto()
 
 
+class Origin(StrEnum):
+    """Name of reference for keyword definition."""
+
+    fits = "FITS Standard"
+    fits_v4 = "FITS Standard, version 4"
+    heasarc = "HEASARC"
+    ogip = "OGIP"
+    vodf = "VODF"
+
+
 class SchemaElement(BaseModel):
     """Any element in the FITS schema."""
 
@@ -53,7 +64,7 @@ class Header(SchemaElement):
     fits_key: str
     dtype: DataType | None = None  #: data type
     unit: str | None = ""  #: astropy unit string representation
-    origin: str | None = None  #: who defined this keword
+    origin: Origin | None = None  #: who defined this keword
     value: str | None = None  #: for headers that have to have a fixed value.
     allowed_values: list[str] = []
     ivoa_key: str | None = None

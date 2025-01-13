@@ -31,11 +31,7 @@ Useful links:
 """
 
 
-from vodftools.schema import (
-    DataType,
-    Header,
-    HeaderGroup,
-)
+from vodftools.schema import DataType, Header, HeaderGroup, Origin
 
 #### Metadata for DL3 EventList:
 
@@ -45,17 +41,20 @@ creator_headers = HeaderGroup(
     headers=[
         Header(
             fits_key="ORIGIN",
-            description="Organization or institution that created this file (e.g. CTAO)",
+            description="Organization or institution responsible for this file (e.g. CTAO)",
+            origin=Origin.fits,
         ),
         Header(
-            fits_key="CREATOR", description="Name of software used to create this file"
+            fits_key="CREATOR",
+            description="Name of software used to create this file",
+            origin=Origin.heasarc,
         ),
         Header(fits_key="DATE", description="Date file was created"),
         Header(
             fits_key="DATAID",
             dtype="uuid",
             ucd="meta.id",
-            description="unique (UUID) of this",
+            description="unique id of this data product generated at creation time",
         ),
         # TODO: contact name, email, software version, format version
     ],
@@ -67,13 +66,13 @@ instrument_headers = HeaderGroup(
         Header(
             fits_key="TELESCOP",
             description="The name of the facility used for the observation",
-            origin="FITS Standard v4",
+            origin=Origin.fits_v4,
             ivoa_key="facility_name",
         ),
         Header(
             fits_key="INSTRUME",
             description="The name of the instrument used for the observation",
-            origin="FITS Standard v4",
+            origin=Origin.fits_v4,
             ivoa_key="instrument_name",
         ),
     ],
@@ -205,14 +204,14 @@ fixity_headers = HeaderGroup(
             fits_key="DATASUM",
             dtype=DataType.uint32,
             description="checksum of the data in the HDU",
-            origin="FITS Standard",
+            origin=Origin.fits,
             required=False,
         ),
         Header(
             fits_key="CHECKSUM",
             dtype=DataType.uint32,
             description="checksum of the entire HDU",
-            origin="FITS Standard",
+            origin=Origin.fits,
         ),
     ],
 )
@@ -223,13 +222,13 @@ bibliographic_headers = HeaderGroup(
         Header(
             fits_key="AUTHOR",
             description="Contact 'Name <email>' associated with this data product",
-            origin="FITS Standard v4",
+            origin=Origin.fits_v4,
             required=True,
         ),
         Header(
             fits_key="REFERENC",
             description="DOI or bibliographic reference of this data product",
-            origin="FITS Standard v4",
+            origin=Origin.fits_v4,
             required=False,
         ),
     ],
@@ -241,13 +240,13 @@ license_headers = HeaderGroup(
         Header(
             fits_key="LICENSE",
             description="License for this data product (e.g. CC BY-NC)",
-            origin="VODF",
+            origin=Origin.vodf,
             required=True,
         ),
         Header(
             fits_key="COPYRIGT",
             description="Copyright owners for this data product",
-            origin="VODF",
+            origin=Origin.vodf,
             required=False,
         ),
     ],
