@@ -37,7 +37,7 @@ from vodftools.schema import DataType, Header, HeaderGroup, Origin
 
 creator_headers = HeaderGroup(
     # TODO: check curator info from IVOA
-    name="CreatorContext",
+    name="CreatorMeta",
     description="Creator Information",
     headers=[
         Header(
@@ -67,7 +67,7 @@ creator_headers = HeaderGroup(
 )
 
 instrument_headers = HeaderGroup(
-    name="InstrumentContext",
+    name="InstrumentMeta",
     description="Instrument Information",
     headers=[
         Header(
@@ -88,7 +88,7 @@ instrument_headers = HeaderGroup(
 )
 
 observation_headers = HeaderGroup(
-    name="ObservationContext",
+    name="ObservationMeta",
     description="Observation Information",
     # obs_id, object
     headers=[
@@ -140,19 +140,21 @@ observation_headers = HeaderGroup(
 
 # MJDREFI int MJDREFF double TIMEUNIT string TIMESYS string TIMEREF
 time_headers = HeaderGroup(
-    name="TimeContext",
+    name="TimeMeta",
     description="Temporal coordinate definitions",
     headers=[
         Header(
             name="reference_time_integer",
             fits_key="MJDREFI",
             description="integer part of reference time",
+            unit="yr",
             dtype=DataType.int32,
             source=Origin.fits_timerep,
         ),
         Header(  # TODO: do we need this? or just use MJDREF?
             name="reference_time_fraction",
             fits_key="MJDREFF",
+            unit="yr",
             description="fractional part of reference time",
             dtype=DataType.float64,
             source=Origin.fits_timerep,
@@ -176,7 +178,7 @@ time_headers = HeaderGroup(
 
 
 space_headers = HeaderGroup(
-    name="SpaceContext",
+    name="SpaceMeta",
     description="Spatial Coordinate Definitions",
     headers=[
         Header(
@@ -256,7 +258,7 @@ fixity_headers = HeaderGroup(
 )
 
 bibliographic_headers = HeaderGroup(
-    name="BibliographyContext",
+    name="BibliographyMeta",
     description="Bibliographic Information",
     headers=[
         Header(
@@ -277,7 +279,7 @@ bibliographic_headers = HeaderGroup(
 )
 
 license_headers = HeaderGroup(
-    name="LicenseContext",
+    name="LicenseMeta",
     description="License for this data product",
     headers=[
         Header(
