@@ -102,7 +102,46 @@ eff_area_2d_hdu = TableExtension(
     subclass2="SPATIAL_NONE",
     subclass3="AEFF_2D",
     headers=[creator_headers, bibliographic_headers],
-    columns=[],
+    columns=[
+        Column(
+            name="ENERGY_LO",
+            description="lower-bound of energy bins",
+            ndims=1,
+            dtype=DataType.float64,
+            unit="TeV",
+            ucd="em.energy",
+        ),
+        Column(
+            name="ENERGY_HI",
+            description="array of upper-bounds of energy bins",
+            ndims=1,
+            dtype=DataType.float64,
+            unit="TeV",
+            ucd="em.energy",
+        ),
+        Column(
+            name="OFFSET_LO",
+            description="array of lower-bounds of offset bins",
+            ndims=1,
+            dtype=DataType.float64,
+            unit="deg",
+            ucd="pos.angDistance",
+        ),
+        Column(
+            name="OFFSET_HI",
+            description="array of upper-bounds of offset bins",
+            ndims=1,
+            dtype=DataType.float64,
+            unit="deg",
+            ucd="pos.angDistance",
+        ),
+        Column(
+            name="AEFF",
+            description="effective area for each energy and offset value",
+            dtype=DataType.float64,
+            ndims=2,
+        ),
+    ],
 )
 
 irf_file = FITSFile(
