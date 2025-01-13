@@ -54,6 +54,7 @@ class Origin(StrEnum):
 class SchemaElement(BaseModel):
     """Any element in the FITS schema."""
 
+    name: str | None = None
     description: str
     required: bool = True
 
@@ -85,7 +86,6 @@ class HeaderGroup(SchemaElement):
 class Extension(SchemaElement):
     """An HDU in FITS terminology."""
 
-    name: str  #: becomes EXTNAME
     headers: list[Header | HeaderGroup]
     version: int = 0  #: used to distinguish between HDUs with same name (EXTVER)
     datamodel: str | None = ""  #: identifier of data model in this HDU (HDUVERS)
@@ -117,7 +117,6 @@ class Extension(SchemaElement):
 class Column(SchemaElement):
     """Column of a Table."""
 
-    name: str
     dtype: DataType
     ndims: int = 0
     unit: str = ""

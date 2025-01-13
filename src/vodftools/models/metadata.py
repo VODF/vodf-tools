@@ -37,6 +37,7 @@ from vodftools.schema import DataType, Header, HeaderGroup, Origin
 
 creator_headers = HeaderGroup(
     # TODO: check curator info from IVOA
+    name="CreatorContext",
     description="Creator Information",
     headers=[
         Header(
@@ -61,6 +62,7 @@ creator_headers = HeaderGroup(
 )
 
 instrument_headers = HeaderGroup(
+    name="InstrumentContext",
     description="Instrument Information",
     headers=[
         Header(
@@ -79,6 +81,7 @@ instrument_headers = HeaderGroup(
 )
 
 observation_headers = HeaderGroup(
+    name="ObservationContext",
     description="Observation Information",
     # obs_id, object
     headers=[
@@ -124,6 +127,7 @@ observation_headers = HeaderGroup(
 
 # MJDREFI int MJDREFF double TIMEUNIT string TIMESYS string TIMEREF
 time_headers = HeaderGroup(
+    name="TimeContext",
     description="Temporal coordinate definitions",
     headers=[
         Header(
@@ -155,6 +159,7 @@ time_headers = HeaderGroup(
 
 
 space_headers = HeaderGroup(
+    name="SpaceContext",
     description="Spatial Coordinate Definitions",
     headers=[
         Header(
