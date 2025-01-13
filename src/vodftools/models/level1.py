@@ -95,7 +95,7 @@ event_file = FITSFile(
 
 eff_area_2d_hdu = TableExtension(
     description="Effective Area Response",
-    name="EFFECTIVE AREA",
+    name="EFFECTIVE_AREA",
     version=1,
     class_name="VODF",
     subclass1="EFF_AREA",
