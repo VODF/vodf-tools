@@ -88,7 +88,7 @@ def fits_template(schema: SchemaElement) -> Generator:
     """
 
 
-def write_fits_template(schema: SchemaElement, output_file: Path) -> None:
+def write_fits_template(schema: SchemaElement, output_file: Path, **kwargs) -> None:
     """Write a FITS tpl file for the given ``SchemaElement``.
 
     Parameters
@@ -99,14 +99,14 @@ def write_fits_template(schema: SchemaElement, output_file: Path) -> None:
         Output filename or path
     """
     with Path(output_file).open(mode="w") as out:
-        for line in fits_template(schema):
+        for line in fits_template(schema, opts=kwargs):
             out.write(line)
             out.write("\n")
 
 
 #!/usr/bin/env python3
 @fits_template.generator(Header)
-def _(hdr: Header, **kwargs):
+def _(hdr: Header, opts):
     extra = ""
     if hdr.unit:
         extra += f" [{u.Unit(hdr.unit)}]"
@@ -123,18 +123,18 @@ def _(hdr: Header, **kwargs):
 
 
 @fits_template.generator(HeaderGroup)
-def _(grp, **kwargs):
+def _(grp, opts):
     yield ""
     yield "/ " + "=" * 78
     yield f"/ {grp.description}"
     yield "/ " + "=" * 78
 
     for header in grp.headers:
-        yield from fits_template(header, **kwargs)
+        yield from fits_template(header, opts)
 
 
 @fits_template.generator(Extension)
-def _(hdu, **kwargs):
+def _(hdu, opts):
     yield "/ " + "#" * 78
     yield f"/ HDU: {hdu.name}"
     yield "/ DESCRIPTION: "
@@ -164,11 +164,11 @@ def _(hdu, **kwargs):
         yield f"HDUCLAS4 = {hdu.subclass4} / subclass level 4"
 
     for header in hdu.headers:
-        yield from fits_template(header, **kwargs)
+        yield from fits_template(header, opts)
 
 
 @fits_template.generator(Column)
-def _(col, **kwargs):
+def _(col, opts):
     optional = " (OPTIONAL) " if col.required is False else ""
     yield f"TTYPE# = {col.name:20s} / {col.description+optional:.70s}"
     yield f"TFORM# = {_TYPE_TO_FITS[col.dtype]:20s} / {col.dtype.name}"
@@ -187,7 +187,7 @@ def _(col, **kwargs):
 
 
 @fits_template.generator(ColumnGroup)
-def _(grp, **kwargs):
+def _(grp, opts):
     yield ""
     yield "/ " + "-" * 60
     yield from textwrap.wrap(
@@ -198,24 +198,24 @@ def _(grp, **kwargs):
     )
     yield "/   "
     for column in grp.columns:
-        yield from fits_template(column, **kwargs)
+        yield from fits_template(column, opts)
 
     yield "/ " + "-" * 60
 
 
 @fits_template.generator(TableExtension)
-def _(table, **kwargs):
+def _(table, opts):
     yield ""
     yield "/ " + "=" * 78
     yield "/ Table Columns"
     yield "/ " + "=" * 78
     for column in table.columns:
-        yield from fits_template(column, **kwargs)
+        yield from fits_template(column, opts)
     yield ""
 
 
 @fits_template.generator(FITSFile)
-def _(ffile, **kwargs):
+def _(ffile, opts):
     yield "/*" + "*" * 78
     yield "/* FITS FILE: "
     yield from textwrap.wrap(
@@ -237,5 +237,5 @@ def _(ffile, **kwargs):
     yield ""
 
     for extension in ffile.extensions:
-        yield from fits_template(extension, **kwargs)
+        yield from fits_template(extension, opts)
     yield "END"

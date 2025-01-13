@@ -25,7 +25,7 @@ class Visitor:
 
         return call
 
-    def __call__(self, obj):
+    def __call__(self, obj, opts=None):
         """Visit the thing."""
         classes = list(get_class_hierarchy(type(obj)))
         if len(classes) == 0:
@@ -34,4 +34,4 @@ class Visitor:
             )
         for cls in classes:
             if cls in self.generators:
-                yield from self.generators[cls](obj)
+                yield from self.generators[cls](obj, opts)
