@@ -11,6 +11,7 @@ from typing import Annotated
 
 from pydantic import BaseModel, Field
 
+from . import vodf_version_id
 from .validators import VALID_NAME_REGEXP, Capitalize, ValidUCD, ValidUnit
 
 __all__ = [
@@ -83,7 +84,9 @@ class Extension(SchemaElement):
 
     headers: list[Header | HeaderGroup]
     version: int = 0  #: used to distinguish between HDUs with same name (EXTVER)
-    datamodel: str | None = ""  #: identifier of data model in this HDU (HDUVERS)
+    datamodel: str | None = (
+        vodf_version_id()
+    )  #: identifier of data model in this HDU (HDUVERS)
     class_name: str | None = None  #: what standard this extension adheres to (HDUCLASS)
     subclass1: str | None = None  #: level-1 hierarchy of this extension, HDUCLAS1
     subclass2: str | None = None  #: level-2 hierarchy of this extension, HDUCLAS2

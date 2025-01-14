@@ -17,7 +17,6 @@
 #   https://gamma-astro-data-formats.readthedocs.io/en/v0.3/general/hduclass.html
 
 
-from .. import vodf_version_id
 from ..schema import (
     Column,
     ColumnGroup,
@@ -41,7 +40,6 @@ event_list_hdu = TableExtension(
     class_name="OGIP",
     subclass1="EVENTS",
     description="VODF Level 1 Event List",
-    datamodel=vodf_version_id(),
     headers=[
         creator_headers,
         bibliographic_headers,
