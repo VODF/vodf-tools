@@ -42,7 +42,7 @@ class DataType(StrEnum):
     uuid = auto()
 
 
-class Origin(StrEnum):
+class Reference(StrEnum):
     """Name of reference for keyword definition."""
 
     fits = "FITS Standard"
@@ -67,7 +67,7 @@ class Header(SchemaElement):
     fits_key: Annotated[str, Capitalize, Field(max_length=8)]
     dtype: DataType | None = None  #: data type
     unit: Annotated[str, ValidUnit] | None = None  #: astropy unit string representation
-    origin: Origin | None = None  #: who defined this keword
+    reference: Reference | None = None  #: who defined this keyword
     value: str | None = None  #: for headers that have to have a fixed value.
     allowed_values: list[str] = []
     ivoa_key: str | None = None
