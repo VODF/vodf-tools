@@ -24,7 +24,6 @@ def plantuml(schema: SchemaElement, **kwargs) -> Generator:
     """Convert schema to a plantuml diagram."""
     yield "@startuml"
     yield "skinparam  wrapWidth 200"
-    # yield "skinparam dpi 300"
     yield "skinparam defaultFontName Helvetica"
 
     for cls in plantuml_class(schema, opts=kwargs):
