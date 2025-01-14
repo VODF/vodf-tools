@@ -52,21 +52,9 @@ def test_write_complex_template(tmp_path):
         ],
     )
 
-    cta_headers = HeaderGroup(
-        name="CTAReference",
-        description="CTA specific Information",
-        headers=[
-            Header(
-                name="instrument_name",
-                fits_key="CTA INSTRUMENT NAME",
-                description="Name of subarray or element of CTAO",
-            )
-        ],
-    )
-
     t = TableExtension(
         name="EVENTS",
-        headers=[h, location_headers, cta_headers],
+        headers=[h, location_headers],
         datamodel="VODF-test",
         class_name="OGIP",
         subclass1="EVENTS",

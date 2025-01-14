@@ -6,12 +6,12 @@ Elements to build a FITS-compliant schema.
 This file defines a meta-schema for FITS bintables and headers.
 """
 
-
 from enum import StrEnum, auto
+from typing import Annotated
 
-from astropy.io.votable.ucd import check_ucd
-from astropy.units import Unit
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, Field
+
+from .validators import VALID_NAME_REGEXP, Capitalize, ValidUCD, ValidUnit
 
 __all__ = [
     "SchemaElement",
@@ -55,7 +55,7 @@ class Origin(StrEnum):
 class SchemaElement(BaseModel):
     """Any element in the FITS schema."""
 
-    name: str
+    name: str = Field(pattern=VALID_NAME_REGEXP)
     description: str
     required: bool = True
 
@@ -63,19 +63,13 @@ class SchemaElement(BaseModel):
 class Header(SchemaElement):
     """A metadata key-value pair."""
 
-    fits_key: str
+    fits_key: Annotated[str, Capitalize, Field(max_length=8)]
     dtype: DataType | None = None  #: data type
-    unit: str | None = ""  #: astropy unit string representation
+    unit: Annotated[str, ValidUnit] | None = None  #: astropy unit string representation
     origin: Origin | None = None  #: who defined this keword
     value: str | None = None  #: for headers that have to have a fixed value.
     allowed_values: list[str] = []
     ivoa_key: str | None = None
-
-    @field_validator("unit")
-    @classmethod
-    def is_valid_unit(cls, val):
-        """Coerce unit into astropy format."""
-        return Unit(val).to_string()
 
 
 class HeaderGroup(SchemaElement):
@@ -120,22 +114,9 @@ class Column(SchemaElement):
 
     dtype: DataType
     ndims: int = 0
-    unit: str = ""
-    ucd: str = ""
-    format: str | None = None
-
-    @field_validator("ucd")
-    @classmethod
-    def is_valid_ucd(cls, val):
-        """Check if valid IVOA UCD."""
-        assert check_ucd(val, check_controlled_vocabulary=True), "Not a valid UCD"
-        return val
-
-    @field_validator("unit")
-    @classmethod
-    def is_valid_unit(cls, val):
-        """Check if valid unit."""
-        return Unit(val).to_string()
+    unit: Annotated[str, ValidUnit] | None = None  #: astropy unit string representation
+    ucd: Annotated[str, ValidUCD] | None = None
+    format: str | None = None  #: format for output to text if not default
 
 
 class ColumnGroup(SchemaElement):
