@@ -9,7 +9,7 @@ This file defines a meta-schema for FITS bintables and headers.
 from enum import StrEnum, auto
 from typing import Annotated
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from . import vodf_version_id
 from .validators import VALID_NAME_REGEXP, Capitalize, ValidUCD, ValidUnit
@@ -48,13 +48,16 @@ class Reference(StrEnum):
     fits = "FITS Standard"
     fits_v4 = "FITS Standard, version 4"
     heasarc = "HEASARC"
-    ogip = "OGIP"
+    ogip = "OGIP HFWG r3"
     vodf = "VODF"
     fits_timerep = "Representations of time coordinates in FITS, A&A 574, A36 (2015)"
+    nasa_extended = "NASA Extended Keywords"
 
 
 class SchemaElement(BaseModel):
     """Any element in the FITS schema."""
+
+    model_config = ConfigDict(extra="forbid")
 
     name: str = Field(pattern=VALID_NAME_REGEXP)
     description: str
@@ -71,6 +74,8 @@ class Header(SchemaElement):
     value: str | None = None  #: for headers that have to have a fixed value.
     allowed_values: list[str] = []
     ivoa_key: None | Annotated[str, Field(pattern=VALID_NAME_REGEXP)] = None
+    ucd: Annotated[str, ValidUCD] | None = None
+    examples: list[str] = []
 
 
 class HeaderGroup(SchemaElement):
