@@ -16,16 +16,17 @@ from .schema import (
 from .visitor import Visitor
 
 __all__ = [
-    "schema_to_plantuml",
+    "plantuml",
 ]
 
 
-def schema_to_plantuml(schema: SchemaElement, **kwargs) -> Generator:
+def plantuml(schema: SchemaElement, **kwargs) -> Generator:
     """Convert schema to a plantuml diagram."""
     yield "@startuml"
     yield "skinparam  wrapWidth 200"
     yield "skinparam dpi 300"
     yield "skinparam defaultFontName Helvetica"
+
     for cls in plantuml_class(schema, opts=kwargs):
         yield str(cls)
 
@@ -122,7 +123,7 @@ def _(ext: TableExtension, opts):
 def _(col: Column, opts):
     if opts.get("detail", False):
         yield "{"
-        for key, value in col.model_dump(exclude_none=True).items():
+        for key, value in col.model_dump(exclude_none=True, exclude=["name"]).items():
             yield f"    + {key} = {value}"
         yield "}"
 
@@ -137,7 +138,7 @@ def _(ext: TableExtension, opts):
 def _(hdr: Header, opts):
     yield "{"
     if opts.get("detail", False):
-        for key, value in hdr.model_dump(exclude_none=True).items():
+        for key, value in hdr.model_dump(exclude_none=True, exclude=["name"]).items():
             yield f"    + {key} = {value}"
     else:
         yield f"    + fits_key = {hdr.fits_key}"
