@@ -148,20 +148,15 @@ def _(hdu, opts):
 
     # TODO: add these as Headers in the constructor?
     yield "XTENSION = BINTABLE"
-    yield f"EXTNAME  = {hdu.name}"
+    yield f"EXTNAME = {hdu.name}"
     yield f"EXTVER  = {hdu.version}"
     yield from maybe_long_key_value("HDUDOC", hdu.description)
-    yield f"HDUVER = {hdu.datamodel}"
-    if hdu.class_name:
-        yield f"HDUCLASS = {hdu.class_name} / type of HDU"
-    if hdu.subclass1:
-        yield f"HDUCLAS1 = {hdu.subclass1} / subclass level 1"
-    if hdu.subclass2:
-        yield f"HDUCLAS2 = {hdu.subclass2} / subclass level 2"
-    if hdu.subclass3:
-        yield f"HDUCLAS3 = {hdu.subclass3} / subclass level 3"
-    if hdu.subclass3:
-        yield f"HDUCLAS4 = {hdu.subclass4} / subclass level 4"
+    yield f"HDUVER  = {hdu.datamodel}"
+
+    if len(hdu.class_hierarchy) >= 1:
+        yield f"HDUCLASS = {hdu.class_hierarchy[0]:20s} / type of HDU"
+        for num, subclass in enumerate(hdu.class_hierarchy[1:]):
+            yield f"HDUCLAS{num+1} = {subclass:20s} / subclass level {num+1}"
 
     for header in hdu.headers:
         yield from fits_template(header, opts)
@@ -231,7 +226,7 @@ def _(ffile, opts):
     for ii, extension in enumerate(ffile.extensions):
         yield (
             f"/*  {ii:3d}. {extension.name:18s} {extension.version:3d} "
-            f"{'.'.join(extension.class_info()):20s}"
+            f"{'.'.join(extension.class_hierarchy):20s}"
         )
     yield "/*" + "*" * 78
     yield ""

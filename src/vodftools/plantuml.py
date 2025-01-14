@@ -24,7 +24,7 @@ def plantuml(schema: SchemaElement, **kwargs) -> Generator:
     """Convert schema to a plantuml diagram."""
     yield "@startuml"
     yield "skinparam  wrapWidth 200"
-    yield "skinparam dpi 300"
+    # yield "skinparam dpi 300"
     yield "skinparam defaultFontName Helvetica"
 
     for cls in plantuml_class(schema, opts=kwargs):
@@ -94,13 +94,9 @@ def _(group, opts):
 @plantuml_class.generator(Extension)
 def _(ext, opts):
     yield "{"
-    yield f"    + version = {ext.version}"
-    yield f"    + class_name = {ext.class_name}"
-    yield f"    + datamodel = {ext.datamodel}"
-    yield f"    + subclass1 = {ext.subclass1}"
-    yield f"    + subclass2 = {ext.subclass2}"
-    yield f"    + subclass3 = {ext.subclass3}"
-    yield f"    + subclass4 = {ext.subclass4}"
+    yield f"    + **version** = {ext.version}"
+    yield f"    + **datamodel** = {ext.datamodel}"
+    yield f"    + **class_hierarchy** = {', '.join(ext.class_hierarchy)}"
     yield "}"
     for header in ext.headers:
         yield from plantuml_class(header, opts)
@@ -109,7 +105,7 @@ def _(ext, opts):
 @plantuml_relationship.generator(Extension)
 def _(ext, opts):
     for header in ext.headers:
-        yield Relationship(from_class=ext.name, to_class=header.name, arrow="*-l-")
+        yield Relationship(from_class=ext.name, to_class=header.name, arrow="o-l-")
         yield from plantuml_relationship(header, opts)
 
 
@@ -124,7 +120,7 @@ def _(col: Column, opts):
     if opts.get("detail", False):
         yield "{"
         for key, value in col.model_dump(exclude_none=True, exclude=["name"]).items():
-            yield f"    + {key} = {value}"
+            yield f"    + **{key}** = {value}"
         yield "}"
 
 
@@ -139,7 +135,7 @@ def _(hdr: Header, opts):
     yield "{"
     if opts.get("detail", False):
         for key, value in hdr.model_dump(exclude_none=True, exclude=["name"]).items():
-            yield f"    + {key} = {value}"
+            yield f"    + **{key}** = {value}"
     else:
         yield f"    + fits_key = {hdr.fits_key}"
     yield "}"

@@ -70,7 +70,7 @@ class Header(SchemaElement):
     reference: Reference | None = None  #: who defined this keyword
     value: str | None = None  #: for headers that have to have a fixed value.
     allowed_values: list[str] = []
-    ivoa_key: str | None = None
+    ivoa_key: None | Annotated[str, Field(pattern=VALID_NAME_REGEXP)] = None
 
 
 class HeaderGroup(SchemaElement):
@@ -84,32 +84,11 @@ class Extension(SchemaElement):
 
     headers: list[Header | HeaderGroup]
     version: int = 0  #: used to distinguish between HDUs with same name (EXTVER)
-    datamodel: str | None = (
-        vodf_version_id()
-    )  #: identifier of data model in this HDU (HDUVERS)
-    class_name: str | None = None  #: what standard this extension adheres to (HDUCLASS)
-    subclass1: str | None = None  #: level-1 hierarchy of this extension, HDUCLAS1
-    subclass2: str | None = None  #: level-2 hierarchy of this extension, HDUCLAS2
-    subclass3: str | None = None  #: level-3 hierarchy of this extension, HDUCLAS3
-    subclass4: str | None = None  #: level-4 hierarchy of this extension, HDUCLAS4
-
-    def class_info(self) -> list[str]:
-        """Return the class info as an array."""
-        if not self.class_name:
-            return []
-        else:
-            return [
-                self.class_name,
-            ] + [
-                x
-                for x in [
-                    self.subclass1,
-                    self.subclass2,
-                    self.subclass3,
-                    self.subclass4,
-                ]
-                if x
-            ]
+    datamodel: str | None = vodf_version_id()  #: identifier of data model in this HDU
+    class_hierarchy: list[
+        str
+    ]  #: defines the standard for this extension (HDUCLASS, HDUCLAS1, ...)
+    #
 
 
 class Column(SchemaElement):

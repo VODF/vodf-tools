@@ -37,8 +37,7 @@ __all__ = ["event_file", "irf_file"]
 
 event_list_hdu = TableExtension(
     name="EVENTS",
-    class_name="OGIP",
-    subclass1="EVENTS",
+    class_hierarchy=["OGIP", "EVENTS"],
     description="VODF Level 1 Event List",
     headers=[
         creator_headers,
@@ -79,6 +78,7 @@ time_interval_columns = ColumnGroup(
 soi_hdu = TableExtension(
     description="Stable Observation Intervals and their connection to IRFs",
     name="SOI",
+    class_hierarchy=["VODF", "SOI"],
     headers=[creator_headers, time_headers, bibliographic_headers],
     columns=[
         time_interval_columns,
@@ -98,10 +98,7 @@ eff_area_2d_hdu = TableExtension(
     description="Effective Area Response",
     name="EFFECTIVE_AREA",
     version=1,
-    class_name="VODF",
-    subclass1="EFF_AREA",
-    subclass2="SPATIAL_NONE",
-    subclass3="AEFF_2D",
+    class_hierarchy=["VODF", "EFF_AREA", "SPATIAL_NONE", "AEFF_2D"],
     headers=[creator_headers, bibliographic_headers],
     columns=[
         Column(
