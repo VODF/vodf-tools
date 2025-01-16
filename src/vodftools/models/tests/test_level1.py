@@ -2,6 +2,7 @@
 
 
 import pytest
+
 from vodftools.fits_template import fits_template, write_fits_template
 from vodftools.models.level1 import event_file, event_list_hdu, soi_hdu
 from vodftools.plantuml import plantuml

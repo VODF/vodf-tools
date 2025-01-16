@@ -90,10 +90,9 @@ class Extension(SchemaElement):
     headers: list[Header | HeaderGroup]
     version: int = 0  #: used to distinguish between HDUs with same name (EXTVER)
     datamodel: str | None = vodf_version_id()  #: identifier of data model in this HDU
-    class_hierarchy: list[
-        str
-    ]  #: defines the standard for this extension (HDUCLASS, HDUCLAS1, ...)
-    #
+
+    #: defines the standard for this extension (HDUCLASS, HDUCLAS1, ...)
+    class_hierarchy: list[str]
 
 
 class Column(SchemaElement):
